@@ -1,0 +1,35 @@
+$icon-font-path: "/bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/";
+$font-size-base: 16px;
+
+// bower:scss
+@import 'bootstrap-sass-official/vendor/assets/stylesheets/bootstrap.scss';
+// endbower
+
+.browsehappy {
+    margin: 0.2em 0;
+    background: #ccc;
+    color: #000;
+    padding: 0.2em 0;
+}
+
+.navbar-dzj {
+  margin-bottom: 0;
+  font-weight: bold;
+}
+
+.mg-t-1 {
+  margin-top: 40px;
+}
+
+.table-col-2 {
+  td {
+    width: 50%;
+  }
+}
+
+.hover-pink:hover {
+  span {
+    @include transition(color 200ms);
+    color: deeppink;
+  }
+}

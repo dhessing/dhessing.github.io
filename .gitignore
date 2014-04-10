@@ -1,0 +1,13 @@
+node_modules
+dist
+.tmp
+.sass-cache
+app/bower_components
+test/bower_components
+
+# Editor files
+.idea/workspace.xml
+.idea/tasks.xml
+
+# Mac
+.DS_Store
