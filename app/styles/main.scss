@@ -2,6 +2,7 @@ $icon-font-path: "/bower_components/bootstrap-sass-official/vendor/assets/fonts/
 $font-size-base: 16px;
 
 // bower:scss
+//noinspection CssUnknownTarget
 @import 'bootstrap-sass-official/vendor/assets/stylesheets/bootstrap.scss';
 // endbower
 
@@ -27,9 +28,25 @@ $font-size-base: 16px;
   }
 }
 
-.hover-pink:hover {
-  span {
-    @include transition(color 200ms);
-    color: deeppink;
-  }
+
+.hover-pink:hover h3 span {
+  color: deeppink;
+}
+
+.love-1 {
+  @include animation(love 1s 1s);
+}
+
+.love-2 {
+  @include animation(love 1s 2s);
+}
+
+.love-3 {
+  @include animation(love 1s 3s);
+}
+
+@-webkit-keyframes love {
+  0% {color: inherit;}
+  50% {color: deeppink;}
+  100% {color: inherit;}
 }
