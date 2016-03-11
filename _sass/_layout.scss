@@ -80,7 +80,7 @@
             padding-bottom: 5px;
         }
 
-        .page-link {
+        .link {
             display: block;
             padding: 5px 10px;
 
@@ -239,4 +239,35 @@
             font-size: 18px;
         }
     }
+}
+
+/**
+  * Table
+  */
+
+.table-fixed {
+    table-layout: fixed;
+}
+
+.borderless {
+  td, th {
+    border-top: 0;
+  }
+}
+
+.table-skills tr td:nth-child(2) {
+    color: goldenrod;
+}
+
+/**
+  * About
+  */
+
+.about-photo {
+    float: left;
+    border: 1px solid grey;
+}
+
+.section {
+    margin-top: 3rem;
 }
