@@ -1,7 +1,6 @@
 ---
 layout: post
 title:  "Preparing for Machine Learning Nanodegree"
-date:   2016-03-11 09:50:47 +0100
 category: "machine-learning"
 ---
 
