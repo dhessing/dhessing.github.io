@@ -2,8 +2,8 @@
 layout: post
 title:  "Multiples of 3 and 5"
 subtitle: "Problem 1"
-date:   2016-03-11 09:50:47 +0100
-category: "Project Euler"
+date:   2016-03-12 09:50:47 +0100
+category: "project-euler"
 ---
 
 > If we list all the natural numbers below 10 that are multiples of 3 or 5, we get 3, 5, 6 and 9. The sum of these multiples is 23.
