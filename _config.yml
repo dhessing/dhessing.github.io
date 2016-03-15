@@ -17,3 +17,6 @@ github_username:  dhessing
 
 # Build settings
 markdown: kramdown
+
+gems:
+  - jekyll-sitemap
