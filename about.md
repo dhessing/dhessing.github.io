@@ -15,7 +15,6 @@ I usually do front and backend work, but I am currently doing a course on
 from Udacity.
 
 
-{:.section}
 ## Education/Courses
 
 {:.table.table-sm.borderless}
@@ -25,7 +24,6 @@ from Udacity.
 **2001 - 2007**	| VWO, NG+NT + Latin
 
 
-{:.section}
 ## Skills
 
 {:.table.table-sm.table-skills.table-fixed}
@@ -53,7 +51,7 @@ Query Languages| SQL, Datalog
 Platforms| MacOSX, Linux, Windows :(
 Testing|**✓**{:.text-success}
 
-{:.section}
+
 ## Personal Projects
 
 * Project Euler solutions:
@@ -68,7 +66,7 @@ Testing|**✓**{:.text-success}
 _coming soon_
 
 
-{:.section}
+
 ## Employers
 
 {:.table.table-sm.borderless}
