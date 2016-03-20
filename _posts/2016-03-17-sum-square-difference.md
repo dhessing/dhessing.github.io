@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "Sum square difference"
-subtitle: "Problem 6"
-category: "project-euler"
+title:  Sum square difference
+subtitle: Problem 6
+category: Project Euler
 ---
 
 > The sum of the squares of the first ten natural numbers is,

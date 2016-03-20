@@ -14,9 +14,17 @@ baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://www.dzjon.nl" # the base hostname & protocol for your site
 twitter_username: dzjonhessing
 github_username:  dhessing
+permalink: '/:year/:month/:day/:title/'
+
+jekyll-archives:
+  enabled:
+    - tag
+    - category
+  layout: 'archive'
 
 # Build settings
 markdown: kramdown
 
 gems:
+  - jekyll-archives
   - jekyll-sitemap

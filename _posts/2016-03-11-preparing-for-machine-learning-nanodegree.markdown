@@ -1,7 +1,9 @@
 ---
 layout: post
-title:  "Preparing for Machine Learning Nanodegree"
-category: "machine-learning"
+title:  Preparing for Machine Learning Nanodegree
+tags: 
+- machine learning
+- udacity
 ---
 
 I'm planning on starting Udacity's [Machine Learning Engineer Nanodegree](https://www.udacity.com/course/machine-learning-engineer-nanodegree--nd009).

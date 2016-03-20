@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "Largest prime factor"
-subtitle: "Problem 3"
-category: "project-euler"
+title:  Largest prime factor
+subtitle: Problem 3
+category: Project Euler
 ---
 
 > The prime factors of 13195 are 5, 7, 13 and 29.
