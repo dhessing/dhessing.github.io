@@ -2,6 +2,7 @@
 layout: page
 title: About
 permalink: /about/
+order: 2
 ---
 
 ![A picture of me](http://www.gravatar.com/avatar/9ab5ebde0d9f8e1fa744ed0d1202d32f.png){:.about-photo.img-rounded.m-r-1}
@@ -10,7 +11,7 @@ My name is Dzjon Hessing and I have 6 years of experience as a full-stack develo
 was 10 years old. I like functional programming and Clojure in particular, but a good Python list comprehension can make
 me very happy as well.
 
-I usually do front and backend work, but I am currently doing a course on
+I usually do backend and frontend work, but I am currently doing a course on
 [Machine Learning](https://www.udacity.com/course/machine-learning-engineer-nanodegree--nd009)
 from Udacity.
 

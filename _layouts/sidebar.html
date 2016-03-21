@@ -1,0 +1,63 @@
+---
+layout: default
+---
+<div class="home container">
+  <div class="row">
+    <div class="col-sm-8 blog-main">
+      {{ content }}
+    </div>
+
+    <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+      <div class="sidebar-module sidebar-module-inset">
+        <h4>About</h4>
+        <p>My name is Dzjon Hessing and I like Machine Learning, Clojure and Python.
+          <a href="{{ "/about" | prepend: site.baseurl }}">Read more 	&raquo;</a></p>
+      </div>
+
+      <div class="sidebar-module">
+        <h4>Elsewhere</h4>
+        <ol class="list-unstyled">
+          <li><a href="https://github.com/dhessing">GitHub</a></li>
+          <li><a href="https://telegram.me/dhessing">Telegram</a></li>
+        </ol>
+      </div>
+
+      <div class="sidebar-module">
+        <h4>Archives</h4>
+
+        <ol class="list-unstyled">
+          {% for post in site.posts %}
+          {% assign currentdate = post.date | date: "%B %Y" %}
+          {% if currentdate != date %}
+          <li>
+            <a class="post-link" href="{{ post.date | date: "/%Y/%m/" }}">{{ post.date | date: "%B %Y" }}</a>
+          </li>
+          {% assign date = currentdate %}
+          {% endif %}
+          {% endfor %}
+        </ol>
+      </div>
+
+      <div class="sidebar-module">
+        <h4>Categories</h4>
+
+        <ol class="list-unstyled">
+          {% for category in site.categories %}
+            <li><a class="post-link" href="{{ site.baseurl }}/category/{{ category[0]|slugify }}/">{{ category[0] }}</a></li>
+          {% endfor %}
+        </ol>
+      </div>
+
+      <div class="sidebar-module">
+        <h4>Tags</h4>
+
+        <ol class="list-unstyled">
+          {% for tag in site.tags %}
+          <li><a class="post-link" href="{{ site.baseurl }}/tag/{{ tag[0]|slugify }}/">{{ tag[0] }}</a></li>
+          {% endfor %}
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
