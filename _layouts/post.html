@@ -1,0 +1,24 @@
+---
+layout: sidebar
+---
+<article class="blog-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <h2 class="blog-post-title" itemprop="name headline">{{ page.title }}</h2>
+  <p class="blog-post-meta">
+    <time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
+      {{ page.date | date: "%b %-d, %Y" }}
+    </time>
+    {% if page.category %}
+    • in <a href="/category/{{ page.category|slugify }}">
+    {{ page.category }}</a>{% endif %}
+    {% if page.tags.size > 0 %}
+    • tagged as
+    {% for tag in page.tags %}
+    <a href="/tag/{{ tag|slugify }}">{{ tag }}</a>{% unless forloop.last %}, {% endunless %}
+    {% endfor %}
+    {% endif %}
+  </p>
+
+  <div itemprop="articleBody">
+    {{ content }}
+  </div>
+</article>
