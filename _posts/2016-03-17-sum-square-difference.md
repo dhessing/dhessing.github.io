@@ -46,7 +46,7 @@ x = \left(\displaystyle\sum_{i=1}^{n} i\right)^2 - \displaystyle\sum_{i=1}^{n} i
 \frac{3n^4 + 2n^3 - 3n^2 - 2n}{12} \\
 $$
 
-That looks workable. Even so, typing formulae into a Clojure REPL is torture, so I punched the above into a calculator.
+That looks workable. Even so, doing arithmetic in a Clojure REPL is torture, so I punched the above into a calculator.
 It works!
 
 

@@ -1,10 +1,3 @@
-# Welcome to Jekyll!
-#
-# This config file is meant for settings that affect your whole blog, values
-# which you are expected to set up once and rarely need to edit after that.
-# For technical reasons, this file is *NOT* reloaded automatically when you use
-# 'jekyll serve'. If you change this file, please restart the server process.
-
 # Site settings
 title: Dzjon Hessing
 email: dhessing@gmail.com
@@ -15,16 +8,41 @@ url: "http://www.dzjon.nl" # the base hostname & protocol for your site
 twitter_username: dzjonhessing
 github_username:  dhessing
 permalink: '/:year/:month/:day/:title/'
+ga_analytics: UA-33653650-1
+paginate: 5
+paginate_path: "/page/:num/"
+
+assets:
+  sources:
+    - _assets/fonts
+    - _assets/images
+    - _assets/javascripts
+    - _assets/stylesheets
+    - _vendor/
+
+exclude:
+  - .bowerrc
+  - .travis.yml
+  - bin/*
+  - bower.json
+  - circle.yml
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - vendor/
 
 jekyll-archives:
   enabled:
-    - tag
-    - category
-  layout: 'archive'
-
-# Build settings
-markdown: kramdown
+    - tags
+    - categories
+    - month
+  layouts:
+    month: month-archive
+    tag: archive
+    category: archive
 
 gems:
-  - jekyll-archives
+  - jekyll-assets
   - jekyll-sitemap
+  - jekyll-archives
+  - jekyll-paginate
