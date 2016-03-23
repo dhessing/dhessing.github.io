@@ -11,6 +11,10 @@ ga_analytics: UA-33653650-1
 paginate: 5
 paginate_path: "/page/:num/"
 
+udacity:
+  introduction_to_statistics: 100
+  linear_algebra_refresher_course: 0
+
 assets:
   sources:
     - _assets/fonts
