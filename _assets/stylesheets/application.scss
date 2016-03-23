@@ -2,6 +2,8 @@
 @import 'bootstrap/scss/bootstrap.scss';
 @import 'syntax-highlighting';
 @import 'blog';
+@import "font-awesome-sprockets";
+@import "font-awesome";
 
 blockquote {
     @extend .blockquote;
@@ -37,6 +39,7 @@ pre {
  * Icons
  */
 .icon {
+    color: $grey-color;
 
     > svg {
         display: inline-block;
@@ -64,4 +67,11 @@ h1, h2, h3, h4, h5, h6 {
     &:not(:first-child) {
         margin-top: 3rem;
     }
+}
+
+/**
+  * Footer
+  */
+.blog-footer {
+  text-align: left;
 }

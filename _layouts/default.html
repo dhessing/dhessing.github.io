@@ -51,6 +51,29 @@
   {{ content }}
 </main>
 
+<footer class="blog-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-4">
+        <ul class="list-unstyled">
+          <li>{{ site.title }}</li>
+          <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+        </ul>
+      </div>
+
+      <div class="col-xs-4">
+        <ul class="list-unstyled ">
+          {% include social-links.html %}
+        </ul>
+      </div>
+
+      <div class="col-xs-4">
+        <p>My experiences with Machine Learning, Clojure and Python.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
 
 {% javascript vendor %}
 {% javascript application %}
