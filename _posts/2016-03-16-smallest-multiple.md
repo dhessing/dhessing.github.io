@@ -24,7 +24,7 @@ Then I'll filter all numbers with this check.
 Let's check that with the example:
 
 {% highlight clojure %}
-(divisable-by-all? 2520 10)
+(divisable-by-all? 10 2520)
 => true
 {% endhighlight %}
 

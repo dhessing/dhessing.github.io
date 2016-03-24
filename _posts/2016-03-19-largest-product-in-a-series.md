@@ -36,15 +36,14 @@ The plan is to break that big number into individual numbers,
 multiply every 13 adjacent digits and find the highest sum.
 
 To break it up into digits I keep chipping off the last digit
-until none remains. Normally you would now reverse the sequence,
-but for our problem we don't need to.
-We will still find the same answer if we search trough the list backwards.
+until none remains.
 
 {% highlight clojure %}
 (defn to-digits [n]
   (->> (iterate #(quot % 10) n)
        (take-while pos?)
-       (map #(mod % 10))))
+       (map #(mod % 10))
+       (reverse)))
 {% endhighlight %}
 
 Now to get the highest sequence I used `partition` to break up the list.
