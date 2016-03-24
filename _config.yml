@@ -11,9 +11,11 @@ ga_analytics: UA-33653650-1
 paginate: 5
 paginate_path: "/page/:num/"
 
+udacity-timestamp: 2016-03-24
+
 udacity:
   introduction_to_statistics: 100
-  linear_algebra_refresher_course: 0
+  linear_algebra_refresher_course: 9
 
 assets:
   sources:
@@ -49,3 +51,4 @@ gems:
   - jekyll-sitemap
   - jekyll-archives
   - jekyll-paginate
+  - jekyll-timeago

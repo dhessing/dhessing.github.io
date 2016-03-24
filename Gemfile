@@ -10,3 +10,4 @@ gem "uglifier", "~> 2.7.2"
 gem "jekyll-archives", "~> 2.1.0"
 gem "jekyll-paginate"
 gem 'font-awesome-sass'
+gem 'jekyll-timeago'

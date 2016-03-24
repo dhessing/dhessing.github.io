@@ -43,12 +43,14 @@ order: 2
   </tr>
 </table>
 
-<h2>Udacity Progress</h2>
+<h2>Udacity Progress </h2>
 
 {% for course in site.udacity %}
-  <p>{{ course[0] | replace: '_', ' ' | capitalize }}: {{ course[1] }}%</p>
-  <progress class="progress progress-info" value="{{ course[1] }}" max="100">{{ course[1] }}%</progress>
+<p>{{ course[0] | replace: '_', ' ' | capitalize }}: {{ course[1] }}%</p>
+<progress class="progress progress-info" value="{{ course[1] }}" max="100">{{ course[1] }}%</progress>
 {% endfor %}
+
+<p class="text-muted">Last update: {{ site.udacity-timestamp | timeago }}</p>
 
 
 <h2>Skills</h2>
