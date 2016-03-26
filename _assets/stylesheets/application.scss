@@ -22,6 +22,7 @@ code {
 
 code {
     padding: 1px 5px;
+    white-space: pre;
 }
 
 pre {
@@ -74,4 +75,11 @@ h1, h2, h3, h4, h5, h6 {
   */
 .blog-footer {
   text-align: left;
+}
+
+/**
+  * Blockquote
+  */
+blockquote .MathJax_Display {
+    font-size: 1rem;
 }
