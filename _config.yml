@@ -11,7 +11,7 @@ ga_analytics: UA-33653650-1
 paginate: 5
 paginate_path: "/page/:num/"
 
-udacity-timestamp: 2016-03-24
+udacity-timestamp: 2016-03-27
 
 udacity:
   introduction_to_statistics: 100
