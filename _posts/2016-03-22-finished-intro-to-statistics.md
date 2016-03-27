@@ -18,7 +18,6 @@ but the intuition can tell you if you've made a mistake somewhere.
 
 The optional programming units were a bit on the easy side for me, but the mathematical proof units were hard.
 It's been a long while since I had to $$ \frac{d}{dx} \log(ex) $$.
-I maybe should have started with the linear algebra course first.
 I liked doing them though.
 
 The customer support is quick to reply, even though I paid absolutely nothing for the course.
