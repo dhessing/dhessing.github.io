@@ -39,8 +39,10 @@
       {% assign sorted_pages = site.pages | sort:"order" %}
       {% for my_page in sorted_pages %}
           {% unless my_page.url contains '/page' %}
-          <a class="nav-link {% if page.url == my_page.url %}active{% endif %}" href="{{ my_page.url | prepend: site.baseurl }}">
-            {{ my_page.title }}</a>
+          {% if my_page.title %}
+            <a class="nav-link {% if page.url == my_page.url %}active{% endif %}" href="{{ my_page.url | prepend: site.baseurl }}">
+              {{ my_page.title }}</a>
+          {% endif %}
           {% endunless %}
       {% endfor %}
     </nav>
