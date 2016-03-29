@@ -83,3 +83,10 @@ h1, h2, h3, h4, h5, h6 {
 blockquote .MathJax_Display {
     font-size: 1rem;
 }
+
+/**
+  * List
+  */
+.no-bullets {
+    list-style: none;
+}
