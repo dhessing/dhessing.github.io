@@ -3,6 +3,7 @@ layout: post
 title:  "Largest product in a grid"
 subtitle: "Problem 11"
 category: Project Euler
+excerpt_separator: <!--more-->
 ---
 
 > In the 20×20 grid below, four numbers along a diagonal line have been marked in red.
@@ -34,6 +35,7 @@ category: Project Euler
 >
 >  What is the greatest product of four adjacent numbers in the same direction (up, down, left, right, or diagonally) in the 20×20 grid?
      
+<!--more-->
 My plan is to find all the possible horizontal, vertical and diagonal combinations of numbers, and then to find the maximum product of these.
 To do this I wrote a function `directions` that takes a coordinate and returns a list of the coordinates for each line:
 
