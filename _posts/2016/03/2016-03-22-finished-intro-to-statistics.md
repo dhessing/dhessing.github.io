@@ -1,9 +1,7 @@
 ---
 layout: post
 title: Finished Intro to Statistics
-tags:
-- Machine Learning
-- Udacity
+category: Udacity
 ---
 
 Before starting Machine Learning on Udacity I wanted to do two refresher courses:
