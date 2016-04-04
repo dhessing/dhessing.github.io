@@ -90,3 +90,10 @@ blockquote .MathJax_Display {
 .no-bullets {
     list-style: none;
 }
+
+/**
+  * Blog
+  */
+.blog-post img {
+    @include center-block;
+}
