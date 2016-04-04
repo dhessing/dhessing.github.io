@@ -22,6 +22,16 @@ layout: default
       </div>
 
       <div class="sidebar-module">
+        <h4>Categories</h4>
+
+        <ol class="list-unstyled">
+          {% for category in site.categories %}
+          <li><a class="post-link" href="{{ site.baseurl }}/category/{{ category[0]|slugify }}/">{{ category[0] }}</a></li>
+          {% endfor %}
+        </ol>
+      </div>
+
+      <div class="sidebar-module">
         <h4>Archives</h4>
 
         <ol class="list-unstyled">
@@ -37,16 +47,7 @@ layout: default
         </ol>
       </div>
 
-      <div class="sidebar-module">
-        <h4>Categories</h4>
-
-        <ol class="list-unstyled">
-          {% for category in site.categories %}
-            <li><a class="post-link" href="{{ site.baseurl }}/category/{{ category[0]|slugify }}/">{{ category[0] }}</a></li>
-          {% endfor %}
-        </ol>
-      </div>
-
+      {% if site.tags.size > 0 %}
       <div class="sidebar-module">
         <h4>Tags</h4>
 
@@ -56,6 +57,7 @@ layout: default
           {% endfor %}
         </ol>
       </div>
+      {% endif %}
     </div>
   </div>
 </div>

@@ -37,14 +37,10 @@
   <div class="container">
     <nav role="navigation" class="nav blog-nav">
       {% assign sorted_pages = site.pages | sort:"order" %}
-      {% for my_page in sorted_pages %}
-          {% unless my_page.url contains '/page' %}
-          {% if my_page.title %}
-            <a class="nav-link {% if page.url == my_page.url %}active{% endif %}" href="{{ my_page.url | prepend: site.baseurl }}">
-              {{ my_page.title }}</a>
-          {% endif %}
-          {% endunless %}
-      {% endfor %}
+      <a class="nav-link {% if page.url == '/'> %}active{% endif %}" href="/">Home</a>
+      <a class="nav-link {% if page.url == '/category/project-euler/' or page.category == 'Project Euler' %}active{% endif %}" href="/category/project-euler/">Project Euler</a>
+      <a class="nav-link {% if page.url == '/category/udacity/' or page.category == 'Udacity' %}active{% endif %}" href="/category/udacity/">Udacity</a>
+      <a class="nav-link {% if page.url == '/about/' %}active{% endif %}" href="/about/">About</a>
     </nav>
   </div>
 </div>

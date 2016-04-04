@@ -16,6 +16,9 @@ layout: sidebar
     <a href="/tag/{{ tag|slugify }}">{{ tag }}</a>{% unless forloop.last %}, {% endunless %}
     {% endfor %}
     {% endif %}
+    {% if page.subtitle %}
+    • {{ page.subtitle }}
+    {% endif %}
   </p>
 
   <div itemprop="articleBody">
