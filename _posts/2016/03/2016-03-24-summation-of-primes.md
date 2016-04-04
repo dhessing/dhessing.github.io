@@ -9,7 +9,7 @@ category: Project Euler
 > 
 > Find the sum of all the primes below two million.
 
-For this one I re-used the prime-generator from [problem 7](http://127.0.0.1:4000/2016/03/18/10001st-prime/).
+For this one I re-used the prime-generator from [problem 7]({% post_url 2016-03-18-10001st-prime %}).
 
 {% highlight clojure %}
 (->> (project-euler.problem-007/prime-seq)
