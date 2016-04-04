@@ -42,8 +42,8 @@ until none remains.
 (defn to-digits [n]
   (->> (iterate #(quot % 10) n)
        (take-while pos?)
-       (map #(mod % 10))
-       (reverse)))
+       (mapv #(mod % 10))
+       (rseq)))
 {% endhighlight %}
 
 Now to get the highest sequence I used `partition` to break up the list.
