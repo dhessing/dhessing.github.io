@@ -68,7 +68,7 @@ of the parents. To put this into code:
 (defn add-max-child [[l r] parent]
   (max (+ l parent) (+ r parent)))
 
-(defn add-max-rows [child-row parent-row]
+(defn add-max-children [child-row parent-row]
   (map add-max-child (partition 2 1 child-row) parent-row))
 ~~~
 
@@ -78,6 +78,6 @@ And to solve:
 (defn maximum-path-sum [triangle]
   (->> triangle
        rseq
-       (reduce add-max-rows)
+       (reduce add-max-children)
        first))
 ~~~
