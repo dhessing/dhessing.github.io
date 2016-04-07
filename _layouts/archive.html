@@ -4,6 +4,7 @@ layout: default
 <h1 class="m-b-1">All posts about {{ page.title }}</h1>
 
 <ul class="m-b-2">
+
   {% for post in page.posts %}
   <li>
     <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
