@@ -22,17 +22,21 @@ The factorial looks as follows:
 ~~~
 
 Let's check it:
-    
-    factorial(101)
-    ArithmeticException integer overflow  clojure.lang.Numbers.throwIntOverflow (Numbers.java:1424)
-    
+
+~~~clojure
+(factorial 101)
+ArithmeticException integer overflow  clojure.lang.Numbers.throwIntOverflow (Numbers.java:1424)
+~~~
+
 Oops. I need to use `*'` instead of `*`.
 It will promote to Clojure's BigInt automatically.
 Let's try that again:
 
-    (reduce *' (range 1 101))
-    =>
-    93326215443944152681699238856266700490715968264381621468592963895217599993229915608941463976156518286253697920827223758251185210916864000000000000000000000000N
+~~~clojure
+(reduce *' (range 1 101))
+=>
+93326215443944152681699238856266700490715968264381621468592963895217599993229915608941463976156518286253697920827223758251185210916864000000000000000000000000N
+~~~
 
 Yeah, that looks about right...
 
