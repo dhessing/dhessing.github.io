@@ -1,19 +1,23 @@
 <h2>Course Progress</h2>
 
 <div class="course-progress">
+
+  {% assign progress = 27 %}
   <p class="m-b-2">
-    <a href="https://www.udacity.com/course/intro-to-data-analysis--ud170">Intro to Data Analysis</a> • 14%
-    <progress class="progress progress-info" value="14" max="100"></progress>
+    <a href="https://www.udacity.com/course/intro-to-data-analysis--ud170">Intro to Data Analysis</a> • {{ progress }}%
+    <progress class="progress progress-info" value="{{ progress }}" max="100"></progress>
   </p>
 
+  {% assign progress = 100 %}
   <p class="m-b-2">
-    <a href="https://www.udacity.com/course/linear-algebra-refresher-course--ud953">Linear Algebra Refresher Course</a> • 100%
-    <progress class="progress progress-info" value="100" max="100"></progress>
+    <a href="https://www.udacity.com/course/linear-algebra-refresher-course--ud953">Linear Algebra Refresher Course</a> • {{ progress }}%
+    <progress class="progress progress-info" value="{{ progress }}" max="100"></progress>
   </p>
 
+  {% assign progress = 100 %}
   <p>
-    <a href="https://www.udacity.com/course/intro-to-statistics--st101">Introduction to Statistics</a> • 100%
-    <progress class="progress progress-info" value="100" max="100"></progress>
+    <a href="https://www.udacity.com/course/intro-to-statistics--st101">Introduction to Statistics</a> • {{ progress }}%
+    <progress class="progress progress-info" value="{{ progress }}" max="100"></progress>
   </p>
 
   <p class="text-muted">Last update: {{ "2016-04-11" | timeago }}</p>
