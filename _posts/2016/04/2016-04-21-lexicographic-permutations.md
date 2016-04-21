@@ -27,12 +27,11 @@ So to add a bit of challenge, I tried writing my own permutation function from s
 
 ~~~clojure
 (defn permutations [items]
-  (lazy-seq
-    (if (= 1 (count items))
-      (list items)
-      (for [item items
-            p (permutations (filter #(not= % item) items))]
-        (cons item p)))))
+  (if (= 1 (count items))
+    (list items)
+    (for [item items
+          p (permutations (filter #(not= % item) items))]
+      (cons item p))))
 ~~~
 
 The function defines the permutations recursively as all of the items 
