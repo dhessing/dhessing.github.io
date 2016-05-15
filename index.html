@@ -35,8 +35,8 @@ description: My experiences with Machine Learning, Clojure and Python.
 
   <nav>
     <ul class="pager">
-      <li {% unless paginator.next_page %}class="disabled"{% endunless %}><a href="{{ paginator.next_page_path }}">&laquo; Older</a></li>
-      <li {% unless paginator.previous_page %}class="disabled"{% endunless %}><a href="{{ paginator.previous_page_path }}">Newer &raquo;</a></li>
+      <li {% unless paginator.next_page %}class="disabled"{% endunless %}><a href="{{ paginator.next_page_path | default:'#' }}">&laquo; Older</a></li>
+      <li {% unless paginator.previous_page %}class="disabled"{% endunless %}><a href="{{ paginator.previous_page_path | default:'#' }}">Newer &raquo;</a></li>
     </ul>
   </nav>
 

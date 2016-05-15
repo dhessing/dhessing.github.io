@@ -35,7 +35,7 @@
 
 <div class="blog-masthead">
   <div class="container">
-    <nav role="navigation" class="nav blog-nav">
+    <nav class="nav blog-nav">
       {% assign sorted_pages = site.pages | sort:"order" %}
       <a class="nav-link {% if page.url == '/'> %}active{% endif %}" href="/">Home</a>
       <a class="nav-link {% if page.url == '/category/courses/' or page.category == 'Courses' %}active{% endif %}" href="/category/courses/">Courses</a>
@@ -45,7 +45,7 @@
   </div>
 </div>
 
-<main role="main" class="container">
+<main class="container">
   {{ content }}
 </main>
 
