@@ -26,11 +26,11 @@ find . -maxdepth 1 ! -name '_site' ! -name '.git' ! -name '.gitignore' ! -name '
 mv _site/* .
 rm -R _site/
 
-# Push to gh-pages.
+# Push to master.
 git config user.name "$USER_NAME"
 git config user.email "$USER_EMAIL"
 
-git add -fA
+git add -A
 git commit --allow-empty -m "$(git log -1 --pretty=%B) [ci skip]"
 git push -f $ORIGIN_URL master
 
