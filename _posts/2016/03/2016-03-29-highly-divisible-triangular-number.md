@@ -10,7 +10,7 @@ category: Project Euler
 >
 > Let us list the factors of the first seven triangle numbers:
 > 
-> {:.no-bullets}
+> {:.list-unstyled}
 > - **1**: 1
 > - **3**: 1,3
 > - **6**: 1,2,3,6
