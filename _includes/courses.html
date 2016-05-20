@@ -3,7 +3,7 @@
 <div class="course-progress">
   <h4 class="m-t-1">Udacity</h4>
 
-  {% assign progress = 10 %}
+  {% assign progress = 17 %}
   <p class="m-b-2">
     <a href="https://www.udacity.com/course/intro-to-artificial-intelligence--cs271">Intro to Artificial Intelligence</a> • {{ progress }}%
     <progress class="progress progress-info" value="{{ progress }}" max="100"></progress>
@@ -31,17 +31,17 @@
 
   <h4>Khan Academy</h4>
 
-  {% assign progress = 1 %}
+  {% assign progress = 2 %}
   <p class="m-b-2">
     <a href="https://www.khanacademy.org/math/linear-algebra">Linear algebra</a> • {{ progress | times: 100 | divided_by: 19 }}%
     <progress class="progress progress-info" value="{{ progress }}" max="19"></progress>
   </p>
 
-  {% assign progress = 85 %}
+  {% assign progress = 89 %}
   <p class="m-b-2">
     <a href="https://www.khanacademy.org/math/differential-calculus">Differential calculus</a> • {{ progress }}%
     <progress class="progress progress-info" value="{{ progress }}" max="100"></progress>
   </p>
 
-  <p class="text-muted">Last update: {{ "2016-05-19" | timeago }}</p>
+  <p class="text-muted">Last update: {{ "2016-05-20" | timeago }}</p>
 </div>
