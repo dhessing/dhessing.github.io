@@ -31,15 +31,17 @@
 
   <h4>Khan Academy</h4>
 
-  {% assign progress = 2 %}
+  {% assign progress = 3 %}
   <p class="m-b-2">
     <a href="https://www.khanacademy.org/math/linear-algebra">Linear algebra</a> • {{ progress | times: 100 | divided_by: 19 }}%
     <progress class="progress progress-info" value="{{ progress }}" max="19"></progress>
   </p>
 
-  {% assign progress = 89 %}
+  {% assign progress = 90 %}
   <p class="m-b-2">
     <a href="https://www.khanacademy.org/math/differential-calculus">Differential calculus</a> • {{ progress }}%
     <progress class="progress progress-info" value="{{ progress }}" max="100"></progress>
   </p>
+
+  <p class="text-muted">Last update: 2016-05-22</p>
 </div>
