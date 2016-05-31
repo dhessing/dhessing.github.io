@@ -84,6 +84,11 @@ blockquote {
     font-size: 1rem;
 }
 
+blockquote > blockquote {
+    font-size: 1rem;
+    border-left: 0;
+}
+
 /**
   * Blog
   */
