@@ -38,7 +38,7 @@
     <nav class="nav blog-nav">
       {% assign sorted_pages = site.pages | sort:"order" %}
       <a class="nav-link {% if page.url == '/'> %}active{% endif %}" href="/">Home</a>
-      <a class="nav-link {% if page.url == '/category/courses/' or page.category == 'Courses' %}active{% endif %}" href="/category/courses/">Courses</a>
+      <a class="nav-link {% if page.url == '/courses/' %}active{% endif %}" href="/courses/">Courses</a>
       <a class="nav-link {% if page.url == '/category/project-euler/' or page.category == 'Project Euler' %}active{% endif %}" href="/category/project-euler/">Project Euler</a>
       <a class="nav-link {% if page.url == '/about/' %}active{% endif %}" href="/about/">About</a>
     </nav>
