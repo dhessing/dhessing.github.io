@@ -43,7 +43,7 @@ order: 1
 
   <h4>Khan Academy</h4>
 
-  {% assign progress = 6 %}
+  {% assign progress = 7 %}
   <p class="m-b-2">
     <a href="https://www.khanacademy.org/math/linear-algebra">Linear algebra</a> • {{ progress | times: 100 | divided_by: 19 }}%
     <progress class="progress progress-info" value="{{ progress }}" max="19"></progress>
@@ -58,15 +58,6 @@ order: 1
   {% assign progress = 100 %}
   <p class="m-b-2">
     <a href="https://www.khanacademy.org/math/differential-calculus">Differential calculus</a> • {{ progress }}%
-    <progress class="progress progress-info" value="{{ progress }}" max="100"></progress>
-  </p>
-
-
-  <h4>Books</h4>
-
-  {% assign progress = 6 %}
-  <p class="m-b-2">
-    <a href="https://www.amazon.com/Clojure-Machine-Learning-Akhil-Wali/dp/1783284358/">Clojure for Machine Learning</a> • {{ progress }}%
     <progress class="progress progress-info" value="{{ progress }}" max="100"></progress>
   </p>
 
