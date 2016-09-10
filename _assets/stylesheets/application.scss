@@ -92,6 +92,14 @@ blockquote > blockquote {
 /**
   * Blog
   */
+a, a:hover {
+  color: $accent-color-dark;
+}
+
+.blog-masthead {
+  background-color: $base-color-500;
+}
+
 .blog-post img {
     @include center-block;
 }
@@ -99,3 +107,4 @@ blockquote > blockquote {
 .course-progress a {
     color: #555;
 }
+
