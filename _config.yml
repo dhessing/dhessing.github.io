@@ -6,7 +6,7 @@ url: "http://www.dzjon.nl" # the base hostname & protocol for your site
 # twitter_username: dzjonhessing
 github_username:  dhessing
 telegram_username: dhessing
-permalink: '/:year/:month/:day/:title/'
+permalink: '/:title/'
 ga_analytics: UA-33653650-1
 paginate: 5
 paginate_path: "/page/:num/"
