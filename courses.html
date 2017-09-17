@@ -6,20 +6,39 @@ order: 1
 ---
 
 <p class="lead m-b-3">
-  I am currently doing courses on
-  <a href="https://www.udacity.com/course/machine-learning-engineer-nanodegree--nd009">Machine Learning</a>
-  from Udacity and some math refresher courses on <a href="https://www.khanacademy.org/">Khan academy</a>.
-  Progress for both is tracked below.
+  I am currently doing courses on Machine Learning in Python, R and Octave.
 </p>
 
 <div class="course-progress">
-  <h4 class="m-t-1">Udacity</h4>
+  <h4 class="m-t-1">Coursera</h4>
 
-  {% assign progress = 2 %}
+  {% assign progress = 0 %}
   <p class="m-b-2">
-    <a href="https://www.udacity.com/course/machine-learning--ud262">Machine Learning</a> • {{ progress | times: 100 | divided_by: 28 }}%
-    <progress class="progress progress-info" value="{{ progress }}" max="28"></progress>
+    <a href="https://www.coursera.org/learn/machine-learning">Machine Learning</a> • <small>Stanford University</small> • {{ progress | times: 100 | divided_by: 11 }}%
+    <progress class="progress progress-info" value="{{ progress }}" max="11"></progress>
   </p>
+
+  <h4>Books</h4>
+
+  {% assign progress = 0 %}
+  <p class="m-b-2">
+    <a href="http://people.math.umass.edu/~lavine/Book/book.pdf">Introduction to Statistical Thought • <small>Lavine</small></a> • {{ progress | times: 100 | divided_by: 475 }}%
+    <progress class="progress progress-info" value="{{ progress }}" max="475"></progress>
+  </p>
+
+  {% assign progress = 13 %}
+  <p class="m-b-2">
+    <a href="http://www.math.yorku.ca/~ifarah/teaching/1021F16/kuttler.pdf">Linear Algebra, Theory And Applications • <small>Kuttler</small></a> • {{ progress | times: 100 | divided_by: 503 }}%
+    <progress class="progress progress-info" value="{{ progress }}" max="503"></progress>
+  </p>
+
+  {% assign progress = 30 %}
+  <p class="m-b-2">
+    <a href="https://web.stanford.edu/~hastie/Papers/ESLII.pdf">The Elements of Statistical Learning • <small> Hastie, Tibshirani, Friedman</small></a> • {{ progress | times: 100 | divided_by: 764 }}%
+    <progress class="progress progress-info" value="{{ progress }}" max="764"></progress>
+  </p>
+
+  <h4>Udacity</h4>
 
   {% assign progress = 100 %}
   <p class="m-b-2">
@@ -40,33 +59,11 @@ order: 1
   </p>
 
   {% assign progress = 100 %}
-  <p>
+  <p class="m-b-2">
     <a href="https://www.udacity.com/course/intro-to-statistics--st101">Introduction to Statistics</a> • {{ progress }}%
     <progress class="progress progress-info" value="{{ progress }}" max="100"></progress>
   </p>
 
-
-
-  <h4>Khan Academy</h4>
-
-  {% assign progress = 7 %}
-  <p class="m-b-2">
-    <a href="https://www.khanacademy.org/math/linear-algebra">Linear algebra</a> • {{ progress | times: 100 | divided_by: 19 }}%
-    <progress class="progress progress-info" value="{{ progress }}" max="19"></progress>
-  </p>
-
-  {% assign progress = 23 %}
-  <p class="m-b-2">
-    <a href="https://www.khanacademy.org/math/integral-calculus">Integral calculus</a> • {{ progress }}%
-    <progress class="progress progress-info" value="{{ progress }}" max="100"></progress>
-  </p>
-
-  {% assign progress = 100 %}
-  <p class="m-b-2">
-    <a href="https://www.khanacademy.org/math/differential-calculus">Differential calculus</a> • {{ progress }}%
-    <progress class="progress progress-info" value="{{ progress }}" max="100"></progress>
-  </p>
-
-  <p class="text-muted">Last update: 2016-11-16</p>
+  <p class="text-muted">Last update: 2017-09-17</p>
 
 </div>
