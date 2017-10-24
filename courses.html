@@ -12,33 +12,32 @@ order: 1
 <div class="course-progress">
   <h4 class="m-t-1">Coursera</h4>
 
-  {% assign progress = 5 %}
-  <p class="m-b-2">
-    <a href="https://www.coursera.org/learn/machine-learning">Machine Learning</a> • <small>Stanford University</small> • {{ progress | times: 100 | divided_by: 11 }}%
-    <progress class="progress progress-info" value="{{ progress }}" max="11"></progress>
-  </p>
-
   <h4>Books</h4>
 
   {% assign progress = 0 %}
-  <p class="m-b-2">
-    <a href="http://people.math.umass.edu/~lavine/Book/book.pdf">Introduction to Statistical Thought • <small>Lavine</small></a> • {{ progress | times: 100 | divided_by: 475 }}%
-    <progress class="progress progress-info" value="{{ progress }}" max="475"></progress>
-  </p>
-
-  {% assign progress = 14 %}
-  <p class="m-b-2">
-    <a href="http://www.math.yorku.ca/~ifarah/teaching/1021F16/kuttler.pdf">Linear Algebra, Theory And Applications • <small>Kuttler</small></a> • {{ progress | times: 100 | divided_by: 503 }}%
-    <progress class="progress progress-info" value="{{ progress }}" max="503"></progress>
-  </p>
-
-  {% assign progress = 30 %}
   <p class="m-b-2">
     <a href="https://web.stanford.edu/~hastie/Papers/ESLII.pdf">The Elements of Statistical Learning • <small> Hastie, Tibshirani, Friedman</small></a> • {{ progress | times: 100 | divided_by: 764 }}%
     <progress class="progress progress-info" value="{{ progress }}" max="764"></progress>
   </p>
 
-  <h4>Udacity</h4>
+  {% assign progress = 0 %}
+  <p class="m-b-2">
+    <a href="http://www-bcf.usc.edu/~gareth/ISL/ISLR%20Seventh%20Printing.pdf">Introduction to Statistical Learning • <small> James, Witten, Hastie, Tibshirani</small></a> • {{ progress | times: 100 | divided_by: 440 }}%
+    <progress class="progress progress-info" value="{{ progress }}" max="440"></progress>
+  </p>
+
+  <h4>Online Courses</h4>
+  {% assign progress = 2 %}
+  <p class="m-b-2">
+    <a href="https://lagunita.stanford.edu/courses/HumanitiesSciences/StatLearning/Winter2016/about">Statistical Learning</a> • <small>Stanford University</small> • {{ progress | times: 100 | divided_by: 76 }}%
+    <progress class="progress progress-info" value="{{ progress }}" max="76"></progress>
+  </p>
+
+  {% assign progress = 5 %}
+  <p class="m-b-2">
+    <a href="https://www.coursera.org/learn/machine-learning">Machine Learning</a> • <small>Stanford University</small> • {{ progress | times: 100 | divided_by: 11 }}%
+    <progress class="progress progress-info" value="{{ progress }}" max="11"></progress>
+  </p>
 
   {% assign progress = 100 %}
   <p class="m-b-2">
