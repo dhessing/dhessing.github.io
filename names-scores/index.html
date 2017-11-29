@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Dzjon Hessing | Names scores</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Names scores">
+  <meta property="og:url" content="http://www.dzjon.nl">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="">
+  <meta property="og:image" content="">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="http://www.dzjon.nl">
+  <meta name="twitter:title" content="Names scores">
+  <meta name="twitter:description" content="">
+  <meta name="twitter:image" content="">
+
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <script async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+
+  <link type="text/css" rel="stylesheet" href="/assets/application.css">
+</head>
+<body>
+<!--[if lt IE 8]>
+<p class="browserupgrade">You are using an <strong>outdated</strong>
+  browser. Please <a href="http://browsehappy.com/">upgrade your browser</a>
+  to improve your experience.</p>
+<![endif]-->
+
+
+<div class="blog-masthead">
+  <div class="container">
+    <nav class="nav blog-nav">
+      
+      <a class="nav-link " href="/">Home</a>
+      <a class="nav-link " href="/courses/">Courses</a>
+      <a class="nav-link active" href="/category/project-euler/">Project Euler</a>
+      <a class="nav-link " href="/about/">About</a>
+    </nav>
+  </div>
+</div>
+
+<main class="container">
+  <div class="home container">
+  <div class="row">
+    <div class="col-md-8 blog-main">
+      <article class="blog-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <h2 class="blog-post-title" itemprop="name headline">Names scores</h2>
+  <p class="blog-post-meta">
+    <time datetime="2016-04-15T00:00:00+00:00" itemprop="datePublished">
+      Apr 15, 2016
+    </time>
+    
+    • in <a href="/category/project-euler">
+    Project Euler</a>
+    
+    
+    • Problem 22
+    
+  </p>
+
+  <div itemprop="articleBody">
+    <blockquote>
+  <p>Using <a href="https://projecteuler.net/project/resources/p022_names.txt">names.txt</a> (right click and ‘Save Link/Target As…’), a 46K text file containing over five-thousand first names, begin by sorting it into alphabetical order. Then working out the alphabetical value for each name, multiply this value by its alphabetical position in the list to obtain a name score.</p>
+
+  <p>For example, when the list is sorted into alphabetical order, COLIN, which is worth 3 + 15 + 12 + 9 + 14 = 53, is the 938th name in the list. So, COLIN would obtain a score of 938 × 53 = 49714.</p>
+
+  <p>What is the total of all the name scores in the file?</p>
+</blockquote>
+
+<p>Another easy one.
+To solve this problem I will simply follow the problem definition.
+I will read the file, sort it, multiply the alphabetical value with the line number, and find the sum.</p>
+
+<p>To load the file I used <code class="highlighter-rouge">slurp</code> and split the file into a vector of names:</p>
+
+<div class="language-clojure highlighter-rouge"><pre class="highlight"><code><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">load-names</span><span class="w"> </span><span class="p">[]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">-&gt;</span><span class="w">
+    </span><span class="p">(</span><span class="nb">slurp</span><span class="w"> </span><span class="s">"resources/p022_names.txt"</span><span class="p">)</span><span class="w">
+    </span><span class="p">(</span><span class="nf">s/replace</span><span class="w"> </span><span class="o">#</span><span class="s">"\""</span><span class="w"> </span><span class="s">""</span><span class="p">)</span><span class="w">
+    </span><span class="p">(</span><span class="nf">s/split</span><span class="w"> </span><span class="o">#</span><span class="s">","</span><span class="p">)))</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>To get the alphabetical value of each word I summed the character codes, minus the offset of 64 for capital letters:</p>
+
+<div class="language-clojure highlighter-rouge"><pre class="highlight"><code><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">alphabetical-value</span><span class="w"> </span><span class="p">[</span><span class="n">word</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">reduce</span><span class="w"> </span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nb">map</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="p">(</span><span class="nb">int</span><span class="w"> </span><span class="n">%</span><span class="p">)</span><span class="w"> </span><span class="mi">64</span><span class="p">)</span><span class="w"> </span><span class="n">word</span><span class="p">)))</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>Now to solve I took the line-number and multiplied it with the word value of the name.</p>
+
+<div class="language-clojure highlighter-rouge"><pre class="highlight"><code><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">name-score</span><span class="w"> </span><span class="p">[</span><span class="nb">index</span><span class="w"> </span><span class="nb">name</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="nb">index</span><span class="w"> </span><span class="p">(</span><span class="nf">alphabetical-value</span><span class="w"> </span><span class="nb">name</span><span class="p">)))</span><span class="w">
+
+</span><span class="p">(</span><span class="nf">-&gt;&gt;</span><span class="w"> </span><span class="p">(</span><span class="nf">load-names</span><span class="p">)</span><span class="w">
+     </span><span class="p">(</span><span class="nb">sort</span><span class="p">)</span><span class="w">
+     </span><span class="p">(</span><span class="nb">map</span><span class="w"> </span><span class="n">name-score</span><span class="w"> </span><span class="p">(</span><span class="nb">iterate</span><span class="w"> </span><span class="nb">inc</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span><span class="w">
+     </span><span class="p">(</span><span class="nb">reduce</span><span class="w"> </span><span class="nb">+</span><span class="p">))</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>Done!</p>
+
+
+  </div>
+</article>
+
+    </div>
+
+    <div class="col-md-3 col-md-offset-1 blog-sidebar">
+      <div class="sidebar-module sidebar-module-inset">
+        <h4>About</h4>
+        <p>My name is Dzjon and I like Machine Learning, Clojure and Python.
+          <a href="/about">Read more 	&raquo;</a></p>
+      </div>
+
+      <div class="sidebar-module">
+        <h4>Elsewhere</h4>
+        <ol class="list-unstyled">
+          
+<li>
+  <a href="https://github.com/dhessing"><i class="icon fa fa-github fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+<li>
+  <a href="https://telegram.me/dhessing"><i class="icon fa fa-paper-plane fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+        </ol>
+      </div>
+
+      <div class="sidebar-module">
+        <h4>Categories</h4>
+
+        <ol class="list-unstyled">
+          
+          <li><a class="post-link" href="/category/project-euler/">Project Euler</a></li>
+          
+        </ol>
+      </div>
+
+      <div class="sidebar-module">
+        <h4>Archives</h4>
+
+        <ol class="list-unstyled">
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/07/">July 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/06/">June 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/05/">May 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/04/">April 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/03/">March 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        </ol>
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+</main>
+
+<footer class="blog-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4">
+        <ul class="list-unstyled">
+          <li>Dzjon Hessing</li>
+          <li><a href="mailto:dhessing@gmail.com">dhessing@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="col-sm-4">
+        <ul class="list-unstyled ">
+          
+<li>
+  <a href="https://github.com/dhessing"><i class="icon fa fa-github fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+<li>
+  <a href="https://telegram.me/dhessing"><i class="icon fa fa-paper-plane fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+        </ul>
+      </div>
+
+      <div class="col-sm-4">
+        <p>My experiences with Machine Learning, Clojure and Python.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script type="text/javascript" src="/assets/vendor.js"></script>
+<script type="text/javascript" src="/assets/application.js"></script>
+
+<script>
+    (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+    function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+    e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+    e.src='https://www.google-analytics.com/analytics.js';
+    r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+    ga('create','UA-33653650-1','auto');ga('send','pageview');
+
+
+</script>
+</body>
+</html>

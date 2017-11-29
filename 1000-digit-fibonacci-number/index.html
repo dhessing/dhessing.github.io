@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Dzjon Hessing | 1000-digit Fibonacci number</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="1000-digit Fibonacci number">
+  <meta property="og:url" content="http://www.dzjon.nl">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="">
+  <meta property="og:image" content="">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="http://www.dzjon.nl">
+  <meta name="twitter:title" content="1000-digit Fibonacci number">
+  <meta name="twitter:description" content="">
+  <meta name="twitter:image" content="">
+
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <script async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+
+  <link type="text/css" rel="stylesheet" href="/assets/application.css">
+</head>
+<body>
+<!--[if lt IE 8]>
+<p class="browserupgrade">You are using an <strong>outdated</strong>
+  browser. Please <a href="http://browsehappy.com/">upgrade your browser</a>
+  to improve your experience.</p>
+<![endif]-->
+
+
+<div class="blog-masthead">
+  <div class="container">
+    <nav class="nav blog-nav">
+      
+      <a class="nav-link " href="/">Home</a>
+      <a class="nav-link " href="/courses/">Courses</a>
+      <a class="nav-link active" href="/category/project-euler/">Project Euler</a>
+      <a class="nav-link " href="/about/">About</a>
+    </nav>
+  </div>
+</div>
+
+<main class="container">
+  <div class="home container">
+  <div class="row">
+    <div class="col-md-8 blog-main">
+      <article class="blog-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <h2 class="blog-post-title" itemprop="name headline">1000-digit Fibonacci number</h2>
+  <p class="blog-post-meta">
+    <time datetime="2016-04-27T00:00:00+00:00" itemprop="datePublished">
+      Apr 27, 2016
+    </time>
+    
+    • in <a href="/category/project-euler">
+    Project Euler</a>
+    
+    
+    • Problem 25
+    
+  </p>
+
+  <div itemprop="articleBody">
+    <blockquote>
+  <p>The Fibonacci sequence is defined by the recurrence relation:</p>
+
+  <p><script type="math/tex">\qquad F_n = F_{n−1} + F_{n−2}\text{, where } F_1 = 1 \text{ and } F_2 = 1.</script></p>
+
+  <p>Hence the first 12 terms will be:</p>
+
+  <p><script type="math/tex">\qquad  F_1 = 1 \\
+\qquad  F_2 = 1 \\
+\qquad  F_3 = 2 \\
+\qquad  F_4 = 3 \\
+\qquad  F_5 = 5 \\
+\qquad  F_6 = 8 \\
+\qquad  F_7 = 13 \\
+\qquad  F_8 = 21 \\
+\qquad  F_9 = 34 \\
+\qquad  F_{10} = 55 \\
+\qquad  F_{11} = 89 \\
+\qquad  F_{12} = 144</script></p>
+
+  <p>The 12th term, <script type="math/tex">F_{12}</script>, is the first term to contain three digits.</p>
+
+  <p>What is the index of the first term in the Fibonacci sequence to contain 1000 digits?</p>
+</blockquote>
+
+<p>First I wrote a Fibonacci sequence generator. 
+It’s basically the same one as in <a href="/even-fibonacci-numbers/">problem 2</a>,
+with the difference that I used Clojure’s bigint so we can use this function to generate large numbers.</p>
+
+<div class="language-clojure highlighter-rouge"><pre class="highlight"><code><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">fib</span><span class="w"> </span><span class="p">[]</span><span class="w">
+  </span><span class="p">((</span><span class="k">fn</span><span class="w"> </span><span class="n">step</span><span class="w"> </span><span class="p">[</span><span class="n">a</span><span class="w"> </span><span class="n">b</span><span class="p">]</span><span class="w">
+     </span><span class="p">(</span><span class="nf">lazy-seq</span><span class="w"> </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="p">(</span><span class="nf">step</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">b</span><span class="p">)))))</span><span class="w">
+    </span><span class="mi">1</span><span class="n">N</span><span class="w"> </span><span class="mi">1</span><span class="n">N</span><span class="p">))</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>The problem can now be solved by searching trough this sequence
+to find the first number that’s larger than the first 1000-digit-number: <script type="math/tex">10^{999}</script>.</p>
+
+<div class="language-clojure highlighter-rouge"><pre class="highlight"><code><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">limit</span><span class="w"> </span><span class="p">(</span><span class="nf">math/expt</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="p">(</span><span class="nb">dec</span><span class="w"> </span><span class="mi">1000</span><span class="p">))]</span><span class="w">
+    </span><span class="p">(</span><span class="nf">-&gt;&gt;</span><span class="w"> </span><span class="p">(</span><span class="nf">fib</span><span class="p">)</span><span class="w">
+         </span><span class="p">(</span><span class="nf">keep-indexed</span><span class="w"> </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">idx</span><span class="w"> </span><span class="n">n</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nb">when</span><span class="w"> </span><span class="p">(</span><span class="nb">&lt;=</span><span class="w"> </span><span class="n">limit</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">inc</span><span class="w"> </span><span class="n">idx</span><span class="p">))))</span><span class="w">
+         </span><span class="p">(</span><span class="nb">first</span><span class="p">)))</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>Note that I’ve increased the index by one to make it 1-indexed.</p>
+
+<p>Done!</p>
+
+  </div>
+</article>
+
+    </div>
+
+    <div class="col-md-3 col-md-offset-1 blog-sidebar">
+      <div class="sidebar-module sidebar-module-inset">
+        <h4>About</h4>
+        <p>My name is Dzjon and I like Machine Learning, Clojure and Python.
+          <a href="/about">Read more 	&raquo;</a></p>
+      </div>
+
+      <div class="sidebar-module">
+        <h4>Elsewhere</h4>
+        <ol class="list-unstyled">
+          
+<li>
+  <a href="https://github.com/dhessing"><i class="icon fa fa-github fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+<li>
+  <a href="https://telegram.me/dhessing"><i class="icon fa fa-paper-plane fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+        </ol>
+      </div>
+
+      <div class="sidebar-module">
+        <h4>Categories</h4>
+
+        <ol class="list-unstyled">
+          
+          <li><a class="post-link" href="/category/project-euler/">Project Euler</a></li>
+          
+        </ol>
+      </div>
+
+      <div class="sidebar-module">
+        <h4>Archives</h4>
+
+        <ol class="list-unstyled">
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/07/">July 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/06/">June 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/05/">May 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/04/">April 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/03/">March 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        </ol>
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+</main>
+
+<footer class="blog-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4">
+        <ul class="list-unstyled">
+          <li>Dzjon Hessing</li>
+          <li><a href="mailto:dhessing@gmail.com">dhessing@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="col-sm-4">
+        <ul class="list-unstyled ">
+          
+<li>
+  <a href="https://github.com/dhessing"><i class="icon fa fa-github fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+<li>
+  <a href="https://telegram.me/dhessing"><i class="icon fa fa-paper-plane fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+        </ul>
+      </div>
+
+      <div class="col-sm-4">
+        <p>My experiences with Machine Learning, Clojure and Python.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script type="text/javascript" src="/assets/vendor.js"></script>
+<script type="text/javascript" src="/assets/application.js"></script>
+
+<script>
+    (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+    function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+    e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+    e.src='https://www.google-analytics.com/analytics.js';
+    r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+    ga('create','UA-33653650-1','auto');ga('send','pageview');
+
+
+</script>
+</body>
+</html>

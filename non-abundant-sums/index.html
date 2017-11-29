@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Dzjon Hessing | Non-abundant sums</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Non-abundant sums">
+  <meta property="og:url" content="http://www.dzjon.nl">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="">
+  <meta property="og:image" content="">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="http://www.dzjon.nl">
+  <meta name="twitter:title" content="Non-abundant sums">
+  <meta name="twitter:description" content="">
+  <meta name="twitter:image" content="">
+
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <script async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+
+  <link type="text/css" rel="stylesheet" href="/assets/application.css">
+</head>
+<body>
+<!--[if lt IE 8]>
+<p class="browserupgrade">You are using an <strong>outdated</strong>
+  browser. Please <a href="http://browsehappy.com/">upgrade your browser</a>
+  to improve your experience.</p>
+<![endif]-->
+
+
+<div class="blog-masthead">
+  <div class="container">
+    <nav class="nav blog-nav">
+      
+      <a class="nav-link " href="/">Home</a>
+      <a class="nav-link " href="/courses/">Courses</a>
+      <a class="nav-link active" href="/category/project-euler/">Project Euler</a>
+      <a class="nav-link " href="/about/">About</a>
+    </nav>
+  </div>
+</div>
+
+<main class="container">
+  <div class="home container">
+  <div class="row">
+    <div class="col-md-8 blog-main">
+      <article class="blog-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <h2 class="blog-post-title" itemprop="name headline">Non-abundant sums</h2>
+  <p class="blog-post-meta">
+    <time datetime="2016-04-17T00:00:00+00:00" itemprop="datePublished">
+      Apr 17, 2016
+    </time>
+    
+    • in <a href="/category/project-euler">
+    Project Euler</a>
+    
+    
+    • Problem 23
+    
+  </p>
+
+  <div itemprop="articleBody">
+    <blockquote>
+  <p>A perfect number is a number for which the sum of its proper divisors is exactly equal to the number. For example, the sum of the proper divisors of 28 would be 1 + 2 + 4 + 7 + 14 = 28, which means that 28 is a perfect number.</p>
+
+  <p>A number n is called deficient if the sum of its proper divisors is less than n and it is called abundant if this sum exceeds n.</p>
+
+  <p>As 12 is the smallest abundant number, 1 + 2 + 3 + 4 + 6 = 16, the smallest number that can be written as the sum of two abundant numbers is 24. By mathematical analysis, it can be shown that all integers greater than 28123 can be written as the sum of two abundant numbers. However, this upper limit cannot be reduced any further by analysis even though it is known that the greatest number that cannot be expressed as the sum of two abundant numbers is less than this limit.</p>
+
+  <p>Find the sum of all the positive integers which cannot be written as the sum of two abundant numbers.</p>
+</blockquote>
+
+<p>This problem can be split up into 3 problems. First I need to find abundant numbers, 
+then I can start finding numbers that are the sums of 2 abundant numbers. 
+Finally I can use this list to find the sum all numbers that are <em>not</em> sums of 2 abundant numbers.</p>
+
+<h2 id="abundant-numbers">Abundant numbers</h2>
+
+<p>Finding abundant numbers is easy because I can reuse the <code class="highlighter-rouge">proper-divisors</code> function from 
+<a href="/amicable-numbers/">problem 021</a>:</p>
+
+<div class="language-clojure highlighter-rouge"><pre class="highlight"><code><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">abundant-number?</span><span class="w"> </span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="p">(</span><span class="nb">reduce</span><span class="w"> </span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nf">p21/proper-divisors</span><span class="w"> </span><span class="n">n</span><span class="p">))))</span><span class="w">
+</span></code></pre>
+</div>
+
+<h2 id="find-sums">Find sums</h2>
+
+<p>Now I need to check if a number <script type="math/tex">n</script> is two sum of two abundant numbers. 
+We know from the problem definition that we only need to check for numbers below 28124,
+because it is mathematically proven that all other numbers can be written as the sum of two abundant numbers.</p>
+
+<p>So to do this I take the number <script type="math/tex">n</script> that we’d like to check and see if for any 
+<script type="math/tex">a</script> in the list of abundant numbers we can calculate <script type="math/tex">b = n - a</script>
+to that <script type="math/tex">b</script> is in the set of abundant numbers.</p>
+
+<div class="language-clojure highlighter-rouge"><pre class="highlight"><code><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">sum-of-two-abundant-numbers-checker</span><span class="w"> </span><span class="p">[]</span><span class="w">
+  </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">abundant-numbers</span><span class="w"> </span><span class="p">(</span><span class="nb">into</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="p">(</span><span class="nb">filter</span><span class="w"> </span><span class="n">abundant-number?</span><span class="w"> </span><span class="p">(</span><span class="nb">range</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">28124</span><span class="p">)))</span><span class="w">
+        </span><span class="n">abundant-number-set</span><span class="w"> </span><span class="p">(</span><span class="nb">set</span><span class="w"> </span><span class="n">abundant-numbers</span><span class="p">)]</span><span class="w">
+    </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">half</span><span class="w"> </span><span class="p">(</span><span class="nb">/</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="mi">2</span><span class="p">)]</span><span class="w">
+        </span><span class="p">(</span><span class="nb">some</span><span class="w"> </span><span class="nb">true?</span><span class="w">
+              </span><span class="p">(</span><span class="k">for</span><span class="w"> </span><span class="p">[</span><span class="n">a</span><span class="w"> </span><span class="n">abundant-numbers</span><span class="w">
+                    </span><span class="no">:while</span><span class="w"> </span><span class="p">(</span><span class="nb">&lt;=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">half</span><span class="p">)</span><span class="w">
+                    </span><span class="no">:let</span><span class="w"> </span><span class="p">[</span><span class="n">b</span><span class="w"> </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="n">a</span><span class="p">)]</span><span class="w">
+                    </span><span class="no">:when</span><span class="w"> </span><span class="p">(</span><span class="nb">contains?</span><span class="w"> </span><span class="n">abundant-number-set</span><span class="w"> </span><span class="n">b</span><span class="p">)]</span><span class="w">
+                </span><span class="n">true</span><span class="p">))))))</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>What’s interesting about the above function it that it returns another function. 
+This is called a closure and I use it because if I want to call this function multiple times,
+the returned function can re-use the variables <code class="highlighter-rouge">abundant-numbers</code> and <code class="highlighter-rouge">abundant-number-set</code> without
+having to recalculate these.</p>
+
+<p>Also note that it only checks half of all possible combinations because <script type="math/tex">a + b</script> is the same as
+<script type="math/tex">b + a</script> and we only need to find one combination.</p>
+
+<h2 id="solve">Solve</h2>
+
+<p>To solve the problem I bind the above function and use it to remove all the numbers 
+that it return true for, up to the number 28123.</p>
+
+<div class="language-clojure highlighter-rouge"><pre class="highlight"><code><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">sum-of-two-abundant-numbers?</span><span class="w"> </span><span class="p">(</span><span class="nf">sum-of-two-abundant-numbers-checker</span><span class="p">)]</span><span class="w">
+    </span><span class="p">(</span><span class="nb">reduce</span><span class="w"> </span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nb">remove</span><span class="w"> </span><span class="n">sum-of-two-abundant-numbers?</span><span class="w"> </span><span class="p">(</span><span class="nb">range</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">28124</span><span class="p">))))</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>Sum it, and done!</p>
+
+  </div>
+</article>
+
+    </div>
+
+    <div class="col-md-3 col-md-offset-1 blog-sidebar">
+      <div class="sidebar-module sidebar-module-inset">
+        <h4>About</h4>
+        <p>My name is Dzjon and I like Machine Learning, Clojure and Python.
+          <a href="/about">Read more 	&raquo;</a></p>
+      </div>
+
+      <div class="sidebar-module">
+        <h4>Elsewhere</h4>
+        <ol class="list-unstyled">
+          
+<li>
+  <a href="https://github.com/dhessing"><i class="icon fa fa-github fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+<li>
+  <a href="https://telegram.me/dhessing"><i class="icon fa fa-paper-plane fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+        </ol>
+      </div>
+
+      <div class="sidebar-module">
+        <h4>Categories</h4>
+
+        <ol class="list-unstyled">
+          
+          <li><a class="post-link" href="/category/project-euler/">Project Euler</a></li>
+          
+        </ol>
+      </div>
+
+      <div class="sidebar-module">
+        <h4>Archives</h4>
+
+        <ol class="list-unstyled">
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/07/">July 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/06/">June 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/05/">May 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/04/">April 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/03/">March 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        </ol>
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+</main>
+
+<footer class="blog-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4">
+        <ul class="list-unstyled">
+          <li>Dzjon Hessing</li>
+          <li><a href="mailto:dhessing@gmail.com">dhessing@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="col-sm-4">
+        <ul class="list-unstyled ">
+          
+<li>
+  <a href="https://github.com/dhessing"><i class="icon fa fa-github fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+<li>
+  <a href="https://telegram.me/dhessing"><i class="icon fa fa-paper-plane fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+        </ul>
+      </div>
+
+      <div class="col-sm-4">
+        <p>My experiences with Machine Learning, Clojure and Python.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script type="text/javascript" src="/assets/vendor.js"></script>
+<script type="text/javascript" src="/assets/application.js"></script>
+
+<script>
+    (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+    function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+    e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+    e.src='https://www.google-analytics.com/analytics.js';
+    r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+    ga('create','UA-33653650-1','auto');ga('send','pageview');
+
+
+</script>
+</body>
+</html>

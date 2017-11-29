@@ -1,7 +1,0 @@
-{
-  "name": "dzjon",
-  "dependencies": {
-    "jquery": "~1.12.0",
-    "bootstrap": "v4.0.0-alpha.2"
-  }
-}

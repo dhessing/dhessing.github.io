@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Dzjon Hessing | Reciprocal cycles</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Reciprocal cycles">
+  <meta property="og:url" content="http://www.dzjon.nl">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="">
+  <meta property="og:image" content="">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="http://www.dzjon.nl">
+  <meta name="twitter:title" content="Reciprocal cycles">
+  <meta name="twitter:description" content="">
+  <meta name="twitter:image" content="">
+
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <script async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+
+  <link type="text/css" rel="stylesheet" href="/assets/application.css">
+</head>
+<body>
+<!--[if lt IE 8]>
+<p class="browserupgrade">You are using an <strong>outdated</strong>
+  browser. Please <a href="http://browsehappy.com/">upgrade your browser</a>
+  to improve your experience.</p>
+<![endif]-->
+
+
+<div class="blog-masthead">
+  <div class="container">
+    <nav class="nav blog-nav">
+      
+      <a class="nav-link " href="/">Home</a>
+      <a class="nav-link " href="/courses/">Courses</a>
+      <a class="nav-link active" href="/category/project-euler/">Project Euler</a>
+      <a class="nav-link " href="/about/">About</a>
+    </nav>
+  </div>
+</div>
+
+<main class="container">
+  <div class="home container">
+  <div class="row">
+    <div class="col-md-8 blog-main">
+      <article class="blog-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <h2 class="blog-post-title" itemprop="name headline">Reciprocal cycles</h2>
+  <p class="blog-post-meta">
+    <time datetime="2016-05-06T00:00:00+00:00" itemprop="datePublished">
+      May 6, 2016
+    </time>
+    
+    • in <a href="/category/project-euler">
+    Project Euler</a>
+    
+    
+    • Problem 26
+    
+  </p>
+
+  <div itemprop="articleBody">
+    <blockquote>
+  <p>A unit fraction contains 1 in the numerator. The decimal representation of the unit fractions with denominators 2 to 10 are given:</p>
+
+  <p><script type="math/tex">\qquad ^1/_2	= 	0.5 \\
+\qquad ^1/_3	= 	0.(3) \\
+\qquad ^1/_4	= 	0.25 \\
+\qquad ^1/_5	= 	0.2 \\
+\qquad ^1/_6	= 	0.1(6) \\
+\qquad ^1/_7	= 	0.(142857) \\
+\qquad ^1/_8	= 	0.125 \\
+\qquad ^1/_9	= 	0.(1) \\
+\qquad ^1/_{10}	= 	0.1 \\</script></p>
+
+  <p>Where 0.1(6) means 0.166666…, and has a 1-digit recurring cycle. It can be seen that 1/7 has a 6-digit recurring cycle.</p>
+
+  <p>Find the value of d &lt; 1000 for which 1/d contains the longest recurring cycle in its decimal fraction part.</p>
+</blockquote>
+
+<p>To find the number of recurring decimals I used the <a href="https://en.wikipedia.org/wiki/Multiplicative_order">Multiplicative order</a>.
+We can use this to find the number of decimals in a cycle by taking <script type="math/tex">a = 10</script>.</p>
+
+<p>From Wikipedia:</p>
+
+<blockquote>
+  <p>In number theory, given an integer a and a positive integer n with gcd(a,n) = 1, the multiplicative order of a modulo n is the smallest positive integer k with</p>
+
+  <p>a^k ≡ 1 (mod n).</p>
+</blockquote>
+
+<p>So to find the number of recurring decimals we search for the lowest <script type="math/tex">k</script> so that <script type="math/tex">10^k \equiv 1 \pmod n</script>.</p>
+
+<div class="language-clojure highlighter-rouge"><pre class="highlight"><code><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">multiplicative-order</span><span class="w"> </span><span class="p">[</span><span class="n">a</span><span class="w"> </span><span class="n">n</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">letfn</span><span class="w"> </span><span class="p">[(</span><span class="nf">f</span><span class="w"> </span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="p">(</span><span class="nf">mod</span><span class="w"> </span><span class="p">(</span><span class="nf">math/expt</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="mi">1</span><span class="p">))]</span><span class="w">
+    </span><span class="p">(</span><span class="nb">when</span><span class="w"> </span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">(</span><span class="nf">math/gcd</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">n</span><span class="p">))</span><span class="w">
+      </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="p">(</span><span class="nb">filter</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="p">(</span><span class="nb">iterate</span><span class="w"> </span><span class="nb">inc</span><span class="w"> </span><span class="mi">1</span><span class="p">))))))</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>So lets try this with the number 7 and calculate <script type="math/tex">O_7(10)</script>:</p>
+
+<div class="language-clojure highlighter-rouge"><pre class="highlight"><code><span class="p">(</span><span class="nf">multiplicative-order</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="mi">7</span><span class="p">)</span><span class="w">
+</span><span class="n">=&gt;</span><span class="w"> </span><span class="mi">6</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>Hooray, 1/7 indeed has 6 recurring digits.</p>
+
+<h2 id="relative-prime">Relative prime</h2>
+
+<p>What’s interesting about this function if that it’s only defined for <script type="math/tex">n</script> that are relative prime to 10.</p>
+
+<div class="language-clojure highlighter-rouge"><pre class="highlight"><code><span class="p">(</span><span class="nf">multiplicative-order</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span><span class="w">
+</span><span class="n">=&gt;</span><span class="w"> </span><span class="n">nil</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>If we would ignore this we could get into an infinite loop, like when calculating <script type="math/tex">O_6(10)</script>:</p>
+
+<script type="math/tex; mode=display">10^1 \bmod 6 ≡ 4 \\
+10^2 \bmod 6 ≡ 4 \\
+10^3 \bmod 6 ≡ 4 \\
+\text{etc...}</script>
+
+<p>Luckily we do not need to calculate these numbers.</p>
+
+<p>These numbers are not relative prime to 10 and will therefore share a factor with another number.
+It can be proven that if the denominators of two fractions are multiples of each other, they will have the same number
+of repeating decimals (for more info see: <a href="http://mathworld.wolfram.com/RepeatingDecimal.html">http://mathworld.wolfram.com/RepeatingDecimal.html</a>).
+So 1/6 will have the same number of recurring digits as 1/3 because they differ by a factor of 2.</p>
+
+<p>Since we are looking for the longest cycle, we are not interested in these multiples at all and just finding the first one will be fine.</p>
+
+<h2 id="answer">Answer</h2>
+
+<p>So now to find the answer we calculate the multiplicative order for numbers <script type="math/tex">% <![CDATA[
+< 1000 %]]></script>
+and used zero as a filler value for <code class="highlighter-rouge">nil</code>.</p>
+
+<div class="language-clojure highlighter-rouge"><pre class="highlight"><code><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="nb">max-key</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nb">or</span><span class="w"> </span><span class="p">(</span><span class="nf">multiplicative-order</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="n">%</span><span class="p">)</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">range</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">1000</span><span class="p">))</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>Done!</p>
+
+  </div>
+</article>
+
+    </div>
+
+    <div class="col-md-3 col-md-offset-1 blog-sidebar">
+      <div class="sidebar-module sidebar-module-inset">
+        <h4>About</h4>
+        <p>My name is Dzjon and I like Machine Learning, Clojure and Python.
+          <a href="/about">Read more 	&raquo;</a></p>
+      </div>
+
+      <div class="sidebar-module">
+        <h4>Elsewhere</h4>
+        <ol class="list-unstyled">
+          
+<li>
+  <a href="https://github.com/dhessing"><i class="icon fa fa-github fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+<li>
+  <a href="https://telegram.me/dhessing"><i class="icon fa fa-paper-plane fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+        </ol>
+      </div>
+
+      <div class="sidebar-module">
+        <h4>Categories</h4>
+
+        <ol class="list-unstyled">
+          
+          <li><a class="post-link" href="/category/project-euler/">Project Euler</a></li>
+          
+        </ol>
+      </div>
+
+      <div class="sidebar-module">
+        <h4>Archives</h4>
+
+        <ol class="list-unstyled">
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/07/">July 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/06/">June 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/05/">May 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/04/">April 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/03/">March 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        </ol>
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+</main>
+
+<footer class="blog-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4">
+        <ul class="list-unstyled">
+          <li>Dzjon Hessing</li>
+          <li><a href="mailto:dhessing@gmail.com">dhessing@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="col-sm-4">
+        <ul class="list-unstyled ">
+          
+<li>
+  <a href="https://github.com/dhessing"><i class="icon fa fa-github fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+<li>
+  <a href="https://telegram.me/dhessing"><i class="icon fa fa-paper-plane fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+        </ul>
+      </div>
+
+      <div class="col-sm-4">
+        <p>My experiences with Machine Learning, Clojure and Python.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script type="text/javascript" src="/assets/vendor.js"></script>
+<script type="text/javascript" src="/assets/application.js"></script>
+
+<script>
+    (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+    function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+    e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+    e.src='https://www.google-analytics.com/analytics.js';
+    r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+    ga('create','UA-33653650-1','auto');ga('send','pageview');
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Dzjon Hessing | Lexicographic permutations</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Lexicographic permutations">
+  <meta property="og:url" content="http://www.dzjon.nl">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="">
+  <meta property="og:image" content="">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="http://www.dzjon.nl">
+  <meta name="twitter:title" content="Lexicographic permutations">
+  <meta name="twitter:description" content="">
+  <meta name="twitter:image" content="">
+
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <script async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+
+  <link type="text/css" rel="stylesheet" href="/assets/application.css">
+</head>
+<body>
+<!--[if lt IE 8]>
+<p class="browserupgrade">You are using an <strong>outdated</strong>
+  browser. Please <a href="http://browsehappy.com/">upgrade your browser</a>
+  to improve your experience.</p>
+<![endif]-->
+
+
+<div class="blog-masthead">
+  <div class="container">
+    <nav class="nav blog-nav">
+      
+      <a class="nav-link " href="/">Home</a>
+      <a class="nav-link " href="/courses/">Courses</a>
+      <a class="nav-link active" href="/category/project-euler/">Project Euler</a>
+      <a class="nav-link " href="/about/">About</a>
+    </nav>
+  </div>
+</div>
+
+<main class="container">
+  <div class="home container">
+  <div class="row">
+    <div class="col-md-8 blog-main">
+      <article class="blog-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <h2 class="blog-post-title" itemprop="name headline">Lexicographic permutations</h2>
+  <p class="blog-post-meta">
+    <time datetime="2016-04-21T00:00:00+00:00" itemprop="datePublished">
+      Apr 21, 2016
+    </time>
+    
+    • in <a href="/category/project-euler">
+    Project Euler</a>
+    
+    
+    • Problem 24
+    
+  </p>
+
+  <div itemprop="articleBody">
+    <blockquote>
+  <p>A permutation is an ordered arrangement of objects. For example, 3124 is one possible permutation of the digits 1, 2, 3 and 4. If all of the permutations are listed numerically or alphabetically, we call it lexicographic order. The lexicographic permutations of 0, 1 and 2 are:</p>
+
+  <script type="math/tex; mode=display">012 \quad 021 \quad 102 \quad 120 \quad 201 \quad 210</script>
+
+  <p>What is the millionth lexicographic permutation of the digits 0, 1, 2, 3, 4, 5, 6, 7, 8 and 9?</p>
+</blockquote>
+
+<p>This challenge is easy because Clojure has the function we need in its library.</p>
+
+<div class="language-clojure highlighter-rouge"><pre class="highlight"><code><span class="p">(</span><span class="nf">require</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="n">clojure.math.combinatorics</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">c</span><span class="p">])</span><span class="w">
+
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">solve</span><span class="w"> </span><span class="p">[]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">c/nth-permutation</span><span class="w"> </span><span class="p">(</span><span class="nb">range</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">dec</span><span class="w"> </span><span class="mi">1000000</span><span class="p">)))</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>And done.</p>
+
+<h2 id="my-permutations">My permutations</h2>
+
+<p>So to add a bit of challenge, I tried writing my own permutation function from scratch.</p>
+
+<div class="language-clojure highlighter-rouge"><pre class="highlight"><code><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">permutations</span><span class="w"> </span><span class="p">[</span><span class="n">items</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">(</span><span class="nb">count</span><span class="w"> </span><span class="n">items</span><span class="p">))</span><span class="w">
+    </span><span class="p">(</span><span class="nb">list</span><span class="w"> </span><span class="n">items</span><span class="p">)</span><span class="w">
+    </span><span class="p">(</span><span class="k">for</span><span class="w"> </span><span class="p">[</span><span class="n">item</span><span class="w"> </span><span class="n">items</span><span class="w">
+          </span><span class="n">p</span><span class="w"> </span><span class="p">(</span><span class="nf">permutations</span><span class="w"> </span><span class="p">(</span><span class="nb">filter</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nb">not=</span><span class="w"> </span><span class="n">%</span><span class="w"> </span><span class="n">item</span><span class="p">)</span><span class="w"> </span><span class="n">items</span><span class="p">))]</span><span class="w">
+      </span><span class="p">(</span><span class="nb">cons</span><span class="w"> </span><span class="n">item</span><span class="w"> </span><span class="n">p</span><span class="p">))))</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>The function defines the permutations recursively as all of the items 
+plus the permutations of the items minus itself.</p>
+
+<p>So the permutations of <code class="highlighter-rouge">[1 2 3]</code> are <code class="highlighter-rouge">[1] + permutations([2 3])</code> and <code class="highlighter-rouge">[2] + permutations([1 3])</code> etc…</p>
+
+<p>It works, but in a benchmark it gets absolutely crushed compared with the library version.</p>
+
+<div class="language-clojure highlighter-rouge"><pre class="highlight"><code><span class="c1">;;;; Library function
+</span><span class="p">(</span><span class="nb">dotimes</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="w"> </span><span class="mi">5</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">time</span><span class="w">
+    </span><span class="p">(</span><span class="nb">dotimes</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="w"> </span><span class="mi">10</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="nb">nth</span><span class="w"> </span><span class="p">(</span><span class="nf">c/permutations</span><span class="w"> </span><span class="p">(</span><span class="nb">range</span><span class="w"> </span><span class="mi">10</span><span class="p">))</span><span class="w"> </span><span class="p">(</span><span class="nb">dec</span><span class="w"> </span><span class="mi">1000000</span><span class="p">)))))</span><span class="w">
+</span><span class="s">"Elapsed time: 3723.572324 msecs"</span><span class="w">
+</span><span class="s">"Elapsed time: 3703.400947 msecs"</span><span class="w">
+</span><span class="s">"Elapsed time: 3677.972303 msecs"</span><span class="w">
+</span><span class="s">"Elapsed time: 3817.614154 msecs"</span><span class="w">
+</span><span class="s">"Elapsed time: 3804.335535 msecs"</span><span class="w">
+</span></code></pre>
+</div>
+
+<div class="language-clojure highlighter-rouge"><pre class="highlight"><code><span class="c1">;;;; My version
+</span><span class="p">(</span><span class="nb">dotimes</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="w"> </span><span class="mi">5</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">time</span><span class="w">
+    </span><span class="p">(</span><span class="nb">dotimes</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="w"> </span><span class="mi">10</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="nf">c/nth-permutation</span><span class="w"> </span><span class="p">(</span><span class="nb">range</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">dec</span><span class="w"> </span><span class="mi">1000000</span><span class="p">)))))</span><span class="w">
+</span><span class="s">"Elapsed time: 1.333919 msecs"</span><span class="w">
+</span><span class="s">"Elapsed time: 0.333342 msecs"</span><span class="w">
+</span><span class="s">"Elapsed time: 0.349889 msecs"</span><span class="w">
+</span><span class="s">"Elapsed time: 0.319568 msecs"</span><span class="w">
+</span><span class="s">"Elapsed time: 0.243754 msecs"</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>So yeah, my code appears to be 10.000 times slower.</p>
+
+<h2 id="why-so-slow">Why so slow</h2>
+
+<p>I started looking into the library code to find out why it was so fast. I expected to find a Java routine,
+but it turns out it is all in Clojure. The critical routine in the code appears to be this monster:</p>
+
+<div class="language-clojure highlighter-rouge"><pre class="highlight"><code><span class="p">(</span><span class="k">defn-</span><span class="w"> </span><span class="n">iter-perm</span><span class="w"> </span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">len</span><span class="w"> </span><span class="p">(</span><span class="nb">count</span><span class="w"> </span><span class="n">v</span><span class="p">)</span><span class="n">,</span><span class="w">
+        </span><span class="n">j</span><span class="w"> </span><span class="p">(</span><span class="nb">loop</span><span class="w"> </span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="mi">2</span><span class="p">)]</span><span class="w">
+            </span><span class="p">(</span><span class="k">cond</span><span class="w"> </span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="n">nil</span><span class="w">
+                  </span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="p">(</span><span class="nf">v</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">v</span><span class="w"> </span><span class="p">(</span><span class="nb">inc</span><span class="w"> </span><span class="n">i</span><span class="p">)))</span><span class="w"> </span><span class="n">i</span><span class="w">
+                  </span><span class="no">:else</span><span class="w"> </span><span class="p">(</span><span class="nf">recur</span><span class="w"> </span><span class="p">(</span><span class="nb">dec</span><span class="w"> </span><span class="n">i</span><span class="p">))))]</span><span class="w">
+    </span><span class="p">(</span><span class="nb">when</span><span class="w"> </span><span class="n">j</span><span class="w">
+      </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">vj</span><span class="w"> </span><span class="p">(</span><span class="nf">v</span><span class="w"> </span><span class="n">j</span><span class="p">)</span><span class="n">,</span><span class="w">
+            </span><span class="n">l</span><span class="w"> </span><span class="p">(</span><span class="nb">loop</span><span class="w"> </span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="p">(</span><span class="nb">dec</span><span class="w"> </span><span class="n">len</span><span class="p">)]</span><span class="w">
+                </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="n">vj</span><span class="w"> </span><span class="p">(</span><span class="nf">v</span><span class="w"> </span><span class="n">i</span><span class="p">))</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="p">(</span><span class="nf">recur</span><span class="w"> </span><span class="p">(</span><span class="nb">dec</span><span class="w"> </span><span class="n">i</span><span class="p">))))]</span><span class="w">
+        </span><span class="p">(</span><span class="nb">loop</span><span class="w"> </span><span class="p">[</span><span class="n">v</span><span class="w"> </span><span class="p">(</span><span class="nb">assoc</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="p">(</span><span class="nf">v</span><span class="w"> </span><span class="n">l</span><span class="p">)</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="n">vj</span><span class="p">)</span><span class="n">,</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="p">(</span><span class="nb">inc</span><span class="w"> </span><span class="n">j</span><span class="p">)</span><span class="n">,</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="p">(</span><span class="nb">dec</span><span class="w"> </span><span class="n">len</span><span class="p">)]</span><span class="w">
+          </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="n">l</span><span class="p">)</span><span class="w">
+            </span><span class="p">(</span><span class="nf">recur</span><span class="w"> </span><span class="p">(</span><span class="nb">assoc</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="p">(</span><span class="nf">v</span><span class="w"> </span><span class="n">l</span><span class="p">)</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="p">(</span><span class="nf">v</span><span class="w"> </span><span class="n">k</span><span class="p">))</span><span class="w"> </span><span class="p">(</span><span class="nb">inc</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">dec</span><span class="w"> </span><span class="n">l</span><span class="p">))</span><span class="w">
+            </span><span class="n">v</span><span class="p">))))))</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>It was not immediately clear to me what was happening, so I tried calling it directly:</p>
+
+<div class="language-clojure highlighter-rouge"><pre class="highlight"><code><span class="p">(</span><span class="nf">iter-perm</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="p">])</span><span class="w">
+</span><span class="n">=&gt;</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w">
+</span><span class="p">(</span><span class="nf">iter-perm</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">1</span><span class="p">])</span><span class="w">
+</span><span class="n">=&gt;</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">2</span><span class="p">]</span><span class="w">
+</span><span class="p">(</span><span class="nf">iter-perm</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">2</span><span class="p">])</span><span class="w">
+</span><span class="n">=&gt;</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">0</span><span class="p">]</span><span class="w">
+</span><span class="p">(</span><span class="nf">iter-perm</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">0</span><span class="p">])</span><span class="w">
+</span><span class="n">=&gt;</span><span class="w"> </span><span class="p">[</span><span class="mi">2</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w">
+</span><span class="p">(</span><span class="nf">iter-perm</span><span class="w"> </span><span class="p">[</span><span class="mi">2</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">1</span><span class="p">])</span><span class="w">
+</span><span class="n">=&gt;</span><span class="w"> </span><span class="p">[</span><span class="mi">2</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">0</span><span class="p">]</span><span class="w">
+</span><span class="p">(</span><span class="nf">iter-perm</span><span class="w"> </span><span class="p">[</span><span class="mi">2</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">0</span><span class="p">])</span><span class="w">
+</span><span class="n">=&gt;</span><span class="w"> </span><span class="n">nil</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>Aha, it gives us the next lexicographic permutation to iterate over, and returns <code class="highlighter-rouge">nil</code> on the last value
+of the sequence. Now looking back at the code, it’s much clearer.</p>
+
+<p>What’s cool about this is that compared to my function it has almost no internal looping state.
+It can calculate the next iteration solely from its arguments.</p>
+
+<p>My function on the other hand creates a Multi-Legged Beast of Terror™ of internal state because
+it calls itself recursively within a for loop. It basically builds lists of permutations
+to build a list of even more permutations. All those stack frames make my algorithm really slow.</p>
+
+<p>So what did I learn from all this? Stack frame allocation is slow.
+Not only should you be using loop/recur (or any of the other methods) anyway to avoid blowing the stack,
+it’s also much faster.</p>
+
+  </div>
+</article>
+
+    </div>
+
+    <div class="col-md-3 col-md-offset-1 blog-sidebar">
+      <div class="sidebar-module sidebar-module-inset">
+        <h4>About</h4>
+        <p>My name is Dzjon and I like Machine Learning, Clojure and Python.
+          <a href="/about">Read more 	&raquo;</a></p>
+      </div>
+
+      <div class="sidebar-module">
+        <h4>Elsewhere</h4>
+        <ol class="list-unstyled">
+          
+<li>
+  <a href="https://github.com/dhessing"><i class="icon fa fa-github fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+<li>
+  <a href="https://telegram.me/dhessing"><i class="icon fa fa-paper-plane fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+        </ol>
+      </div>
+
+      <div class="sidebar-module">
+        <h4>Categories</h4>
+
+        <ol class="list-unstyled">
+          
+          <li><a class="post-link" href="/category/project-euler/">Project Euler</a></li>
+          
+        </ol>
+      </div>
+
+      <div class="sidebar-module">
+        <h4>Archives</h4>
+
+        <ol class="list-unstyled">
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/07/">July 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/06/">June 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/05/">May 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/04/">April 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/03/">March 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        </ol>
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+</main>
+
+<footer class="blog-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4">
+        <ul class="list-unstyled">
+          <li>Dzjon Hessing</li>
+          <li><a href="mailto:dhessing@gmail.com">dhessing@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="col-sm-4">
+        <ul class="list-unstyled ">
+          
+<li>
+  <a href="https://github.com/dhessing"><i class="icon fa fa-github fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+<li>
+  <a href="https://telegram.me/dhessing"><i class="icon fa fa-paper-plane fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+        </ul>
+      </div>
+
+      <div class="col-sm-4">
+        <p>My experiences with Machine Learning, Clojure and Python.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script type="text/javascript" src="/assets/vendor.js"></script>
+<script type="text/javascript" src="/assets/application.js"></script>
+
+<script>
+    (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+    function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+    e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+    e.src='https://www.google-analytics.com/analytics.js';
+    r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+    ga('create','UA-33653650-1','auto');ga('send','pageview');
+
+
+</script>
+</body>
+</html>

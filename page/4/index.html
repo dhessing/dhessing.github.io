@@ -37,7 +37,7 @@
   <div class="container">
     <nav class="nav blog-nav">
       
-      <a class="nav-link active" href="/">Home</a>
+      <a class="nav-link " href="/">Home</a>
       <a class="nav-link " href="/courses/">Courses</a>
       <a class="nav-link " href="/category/project-euler/">Project Euler</a>
       <a class="nav-link " href="/about/">About</a>
@@ -52,10 +52,10 @@
       <div class="blog-main">
   
     <article class="blog-post" itemscope itemtype="http://schema.org/BlogPosting">
-      <h2 class="blog-post-title" itemprop="name headline"><a href="/digit-cancelling-fractions/">Digit cancelling fractions</a></h2>
+      <h2 class="blog-post-title" itemprop="name headline"><a href="/maximum-path-sum-I/">Maximum path sum I</a></h2>
       <p class="blog-post-meta">
-        <time datetime="2016-07-05T00:00:00+00:00" itemprop="datePublished">
-          Jul 5, 2016
+        <time datetime="2016-04-06T00:00:00+00:00" itemprop="datePublished">
+          Apr 6, 2016
         </time>
         
           • in <a href="/category/project-euler">
@@ -63,26 +63,49 @@
         
         
         
-        • Problem 33
+        • Problem 18
         
       </p>
 
       <blockquote>
-  <p>The fraction <sup>49</sup>/<sub>98</sub> is a curious fraction, as an inexperienced mathematician in attempting to simplify it may incorrectly believe that <sup>49</sup>/<sub>98</sub> = <sup>4</sup>/<sub>8</sub>, which is correct, is obtained by cancelling the 9s.</p>
-  <p>We shall consider fractions like, <sup>30</sup>/<sub>50</sub> = <sup>3</sup>/<sub>5</sub>, to be trivial examples.</p>
-  <p>There are exactly four non-trivial examples of this type of fraction, less than one in value, and containing two digits in the numerator and denominator.</p>
-  <p>If the product of these four fractions is given in its lowest common terms, find the value of the denominator.</p>
+  <p>By starting at the top of the triangle below and moving to adjacent numbers on the row below, the maximum total from top to bottom is 23.</p>
+
+  <p style="text-align:center;font-family:'courier new';font-size:12pt;"><span style="color:#ff0000;"><b>3</b></span><br /><span style="color:#ff0000;"><b>7</b></span> 4<br />
+  2 <span style="color:#ff0000;"><b>4</b></span> 6<br />
+  8 5 <span style="color:#ff0000;"><b>9</b></span> 3</p>
+
+  <p>That is, 3 + 7 + 4 + 9 = 23.</p>
+
+  <p>Find the maximum total from top to bottom of the triangle below:</p>
+
+  <p style="text-align:center;font-family:'courier new';font-size:12pt;">75<br />
+  95 64<br />
+  17 47 82<br />
+  18 35 87 10<br />
+  20 04 82 47 65<br />
+  19 01 23 75 03 34<br />
+  88 02 77 73 07 63 67<br />
+  99 65 04 28 06 16 70 92<br />
+  41 41 26 56 83 40 80 70 33<br />
+  41 48 72 33 47 32 37 16 94 29<br />
+  53 71 44 65 25 43 91 52 97 51 14<br />
+  70 11 33 28 77 73 17 78 39 68 17 57<br />
+  91 71 52 38 17 14 91 43 58 50 27 29 48<br />
+  63 66 04 68 89 53 67 30 73 16 69 87 40 31<br />
+  04 62 98 27 23 09 70 98 73 93 38 53 60 04 23</p>
+
+  <p><strong>NOTE</strong>: As there are only 16384 routes, it is possible to solve this problem by trying every route. However, Problem 67, is the same challenge with a triangle containing one-hundred rows; it cannot be solved by brute force, and requires a clever method! ;o)</p>
 </blockquote>
 
 
-      <a href="/digit-cancelling-fractions/">Read more &raquo;</a>
+      <a href="/maximum-path-sum-I/">Read more &raquo;</a>
     </article>
   
     <article class="blog-post" itemscope itemtype="http://schema.org/BlogPosting">
-      <h2 class="blog-post-title" itemprop="name headline"><a href="/pandigital-products/">Pandigital Products</a></h2>
+      <h2 class="blog-post-title" itemprop="name headline"><a href="/number-letter-counts/">Number letter counts</a></h2>
       <p class="blog-post-meta">
-        <time datetime="2016-06-24T00:00:00+00:00" itemprop="datePublished">
-          Jun 24, 2016
+        <time datetime="2016-04-05T00:00:00+00:00" itemprop="datePublished">
+          Apr 5, 2016
         </time>
         
           • in <a href="/category/project-euler">
@@ -90,26 +113,27 @@
         
         
         
-        • Problem 32
+        • Problem 17
         
       </p>
 
       <blockquote>
-  <p>We shall say that an <var>n</var>-digit number is pandigital if it makes use of all the digits 1 to <var>n</var> exactly once; for example, the 5-digit number, 15234, is 1 through 5 pandigital.</p>
-  <p>The product 7254 is unusual, as the identity, 39 × 186 = 7254, containing multiplicand, multiplier, and product is 1 through 9 pandigital.</p>
-  <p>Find the sum of all products whose multiplicand/multiplier/product identity can be written as a 1 through 9 pandigital.</p>
-  <div class="note">HINT: Some products can be obtained in more than one way so be sure to only include it once in your sum.</div>
+  <p>If the numbers 1 to 5 are written out in words: one, two, three, four, five, then there are 3 + 3 + 5 + 4 + 4 = 19 letters used in total.</p>
+
+  <p>If all the numbers from 1 to 1000 (one thousand) inclusive were written out in words, how many letters would be used?</p>
+
+  <p><strong>NOTE:</strong> Do not count spaces or hyphens. For example, 342 (three hundred and forty-two) contains 23 letters and 115 (one hundred and fifteen) contains 20 letters. The use of “and” when writing out numbers is in compliance with British usage.</p>
 </blockquote>
 
 
-      <a href="/pandigital-products/">Read more &raquo;</a>
+      <a href="/number-letter-counts/">Read more &raquo;</a>
     </article>
   
     <article class="blog-post" itemscope itemtype="http://schema.org/BlogPosting">
-      <h2 class="blog-post-title" itemprop="name headline"><a href="/coin-sums/">Coin sums</a></h2>
+      <h2 class="blog-post-title" itemprop="name headline"><a href="/power-digit-sum/">Power digit sum</a></h2>
       <p class="blog-post-meta">
-        <time datetime="2016-06-18T00:00:00+00:00" itemprop="datePublished">
-          Jun 18, 2016
+        <time datetime="2016-04-04T00:00:00+00:00" itemprop="datePublished">
+          Apr 4, 2016
         </time>
         
           • in <a href="/category/project-euler">
@@ -117,27 +141,25 @@
         
         
         
-        • Problem 31
+        • Problem 16
         
       </p>
 
       <blockquote>
-  <p>In England the currency is made up of pound, £, and pence, p, and there are eight coins in general circulation:</p>
-  <blockquote>1p, 2p, 5p, 10p, 20p, 50p, £1 (100p) and £2 (200p).</blockquote>
-  <p>It is possible to make £2 in the following way:</p>
-  <blockquote>1×£1 + 1×50p + 2×20p + 1×5p + 1×2p + 3×1p</blockquote>
-  <p>How many different ways can £2 be made using any number of coins?</p>
+  <p><script type="math/tex">2^{15} = 32768</script> and the sum of its digits is <script type="math/tex">3 + 2 + 7 + 6 + 8 = 26</script>.</p>
+
+  <p>What is the sum of the digits of the number <script type="math/tex">2^{1000}</script>?</p>
 </blockquote>
 
 
-      <a href="/coin-sums/">Read more &raquo;</a>
+      <a href="/power-digit-sum/">Read more &raquo;</a>
     </article>
   
     <article class="blog-post" itemscope itemtype="http://schema.org/BlogPosting">
-      <h2 class="blog-post-title" itemprop="name headline"><a href="/digit-fifth-powers/">Digit fifth powers</a></h2>
+      <h2 class="blog-post-title" itemprop="name headline"><a href="/lattice-paths/">Lattice Paths</a></h2>
       <p class="blog-post-meta">
-        <time datetime="2016-06-05T00:00:00+00:00" itemprop="datePublished">
-          Jun 5, 2016
+        <time datetime="2016-04-04T00:00:00+00:00" itemprop="datePublished">
+          Apr 4, 2016
         </time>
         
           • in <a href="/category/project-euler">
@@ -145,29 +167,27 @@
         
         
         
-        • Problem 30
+        • Problem 15
         
       </p>
 
       <blockquote>
-  <p>Surprisingly there are only three numbers that can be written as the sum of fourth powers of their digits:</p>
-  <blockquote>1634 = 1<sup>4</sup> + 6<sup>4</sup> + 3<sup>4</sup> + 4<sup>4</sup><br />
-8208 = 8<sup>4</sup> + 2<sup>4</sup> + 0<sup>4</sup> + 8<sup>4</sup><br />
-9474 = 9<sup>4</sup> + 4<sup>4</sup> + 7<sup>4</sup> + 4<sup>4</sup></blockquote>
-  <p class="info">As 1 = 1<sup>4</sup> is not a sum it is not included.</p>
-  <p>The sum of these numbers is 1634 + 8208 + 9474 = 19316.</p>
-  <p>Find the sum of all the numbers that can be written as the sum of fifth powers of their digits.</p>
+  <p>Starting in the top left corner of a 2×2 grid, and only being able to move to the right and down, there are exactly 6 routes to the bottom right corner.</p>
+
+  <p><img src="/assets/p015.gif" alt="example image" /></p>
+
+  <p>How many such routes are there through a 20×20 grid?</p>
 </blockquote>
 
 
-      <a href="/digit-fifth-powers/">Read more &raquo;</a>
+      <a href="/lattice-paths/">Read more &raquo;</a>
     </article>
   
     <article class="blog-post" itemscope itemtype="http://schema.org/BlogPosting">
-      <h2 class="blog-post-title" itemprop="name headline"><a href="/distinct-powers/">Distinct powers</a></h2>
+      <h2 class="blog-post-title" itemprop="name headline"><a href="/longest-collatz-sequence/">Longest Collatz sequence</a></h2>
       <p class="blog-post-meta">
-        <time datetime="2016-05-31T00:00:00+00:00" itemprop="datePublished">
-          May 31, 2016
+        <time datetime="2016-04-01T00:00:00+00:00" itemprop="datePublished">
+          Apr 1, 2016
         </time>
         
           • in <a href="/category/project-euler">
@@ -175,30 +195,37 @@
         
         
         
-        • Problem 29
+        • Problem 14
         
       </p>
 
       <blockquote>
-  <p>Consider all integer combinations of <i>a</i><sup><i>b</i></sup> for 2 ≤ <i>a</i> ≤ 5 and 2 ≤ <i>b</i> ≤ 5:</p>
-  <blockquote>2<sup>2</sup>=4, 2<sup>3</sup>=8, 2<sup>4</sup>=16, 2<sup>5</sup>=32<br />
-3<sup>2</sup>=9, 3<sup>3</sup>=27, 3<sup>4</sup>=81, 3<sup>5</sup>=243<br />
-4<sup>2</sup>=16, 4<sup>3</sup>=64, 4<sup>4</sup>=256, 4<sup>5</sup>=1024<br />
-5<sup>2</sup>=25, 5<sup>3</sup>=125, 5<sup>4</sup>=625, 5<sup>5</sup>=3125<br /></blockquote>
-  <p>If they are then placed in numerical order, with any repeats removed, we get the following sequence of 15 distinct terms:</p>
-  <p style="text-align:center;">4, 8, 9, 16, 25, 27, 32, 64, 81, 125, 243, 256, 625, 1024, 3125</p>
-  <p>How many distinct terms are in the sequence generated by <i>a</i><sup><i>b</i></sup> for 2 ≤ <i>a</i> ≤ 100 and 2 ≤ <i>b</i> ≤ 100?</p>
+  <p>The following iterative sequence is defined for the set of positive integers:</p>
+
+  <script type="math/tex; mode=display">n → n / 2 \: ( n \text{ is even} )</script>
+
+  <script type="math/tex; mode=display">n → 3n + 1 \: ( n \text{ is odd} )</script>
+
+  <p>Using the rule above and starting with 13, we generate the following sequence:</p>
+
+  <script type="math/tex; mode=display">13 → 40 → 20 → 10 → 5 → 16 → 8 → 4 → 2 → 1</script>
+
+  <p>It can be seen that this sequence (starting at 13 and finishing at 1) contains 10 terms. Although it has not been proved yet (Collatz Problem), it is thought that all starting numbers finish at 1.</p>
+
+  <p>Which starting number, under one million, produces the longest chain?</p>
+
+  <p><strong>NOTE</strong>: Once the chain starts the terms are allowed to go above one million.</p>
 </blockquote>
 
 
-      <a href="/distinct-powers/">Read more &raquo;</a>
+      <a href="/longest-collatz-sequence/">Read more &raquo;</a>
     </article>
   
 
   <nav>
     <ul class="pager">
-      <li ><a href="/page/2/">&laquo; Older</a></li>
-      <li class="disabled"><a href="#">Newer &raquo;</a></li>
+      <li ><a href="/page/5/">&laquo; Older</a></li>
+      <li ><a href="/page/3/">Newer &raquo;</a></li>
     </ul>
   </nav>
 

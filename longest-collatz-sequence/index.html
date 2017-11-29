@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Dzjon Hessing | Longest Collatz sequence</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Longest Collatz sequence">
+  <meta property="og:url" content="http://www.dzjon.nl">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="">
+  <meta property="og:image" content="">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="http://www.dzjon.nl">
+  <meta name="twitter:title" content="Longest Collatz sequence">
+  <meta name="twitter:description" content="">
+  <meta name="twitter:image" content="">
+
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <script async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+
+  <link type="text/css" rel="stylesheet" href="/assets/application.css">
+</head>
+<body>
+<!--[if lt IE 8]>
+<p class="browserupgrade">You are using an <strong>outdated</strong>
+  browser. Please <a href="http://browsehappy.com/">upgrade your browser</a>
+  to improve your experience.</p>
+<![endif]-->
+
+
+<div class="blog-masthead">
+  <div class="container">
+    <nav class="nav blog-nav">
+      
+      <a class="nav-link " href="/">Home</a>
+      <a class="nav-link " href="/courses/">Courses</a>
+      <a class="nav-link active" href="/category/project-euler/">Project Euler</a>
+      <a class="nav-link " href="/about/">About</a>
+    </nav>
+  </div>
+</div>
+
+<main class="container">
+  <div class="home container">
+  <div class="row">
+    <div class="col-md-8 blog-main">
+      <article class="blog-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <h2 class="blog-post-title" itemprop="name headline">Longest Collatz sequence</h2>
+  <p class="blog-post-meta">
+    <time datetime="2016-04-01T00:00:00+00:00" itemprop="datePublished">
+      Apr 1, 2016
+    </time>
+    
+    • in <a href="/category/project-euler">
+    Project Euler</a>
+    
+    
+    • Problem 14
+    
+  </p>
+
+  <div itemprop="articleBody">
+    <blockquote>
+  <p>The following iterative sequence is defined for the set of positive integers:</p>
+
+  <script type="math/tex; mode=display">n → n / 2 \: ( n \text{ is even} )</script>
+
+  <script type="math/tex; mode=display">n → 3n + 1 \: ( n \text{ is odd} )</script>
+
+  <p>Using the rule above and starting with 13, we generate the following sequence:</p>
+
+  <script type="math/tex; mode=display">13 → 40 → 20 → 10 → 5 → 16 → 8 → 4 → 2 → 1</script>
+
+  <p>It can be seen that this sequence (starting at 13 and finishing at 1) contains 10 terms. Although it has not been proved yet (Collatz Problem), it is thought that all starting numbers finish at 1.</p>
+
+  <p>Which starting number, under one million, produces the longest chain?</p>
+
+  <p><strong>NOTE</strong>: Once the chain starts the terms are allowed to go above one million.</p>
+</blockquote>
+
+<p>This is easily my favorite problem so far.</p>
+
+<p>The first thing to do is write a function to calculate the length of a single sequence, starting from <script type="math/tex">n</script>.
+To calculate this, we don’t actually need all the individual terms. 
+We can just recursively add one to the length of the Collatz sequence of the next number in the chain:</p>
+
+<div class="language-clojure highlighter-rouge"><pre class="highlight"><code><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">collatz-step</span><span class="w"> </span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nf">even?</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">/</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">inc</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="mi">3</span><span class="p">))))</span><span class="w">
+
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">collatz-chain-length</span><span class="w"> </span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w">
+    </span><span class="mi">1</span><span class="w">
+    </span><span class="p">(</span><span class="nb">inc</span><span class="w"> </span><span class="p">(</span><span class="nf">collatz-chain-length</span><span class="w"> </span><span class="p">(</span><span class="nf">collatz-step</span><span class="w"> </span><span class="n">n</span><span class="p">)))))</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>Let’s check this with the example from above:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>(collatz-chain-length 13)
+=&gt; 10
+</code></pre>
+</div>
+
+<p>This basically works, but if we try to solve the problem using:</p>
+
+<div class="language-clojure highlighter-rouge"><pre class="highlight"><code><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="nb">max-key</span><span class="w"> </span><span class="n">collatz-chain-length</span><span class="w"> </span><span class="p">(</span><span class="nb">range</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="mi">1</span><span class="n">e6</span><span class="p">))</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>It will take a long, <em>long</em> time.</p>
+
+<h2 id="memoization">Memoization</h2>
+
+<p>The above solution is slow because we are generating some sequences over and over again.
+Take for example the Collatz sequences of 5 and 32:</p>
+
+<script type="math/tex; mode=display">5 → 16 → 8 → 4 → 2 → 1</script>
+
+<script type="math/tex; mode=display">32 → 16 → 8 → 4 → 2 → 1</script>
+
+<p>The sequence 16 → 8 → 4 → 2 → 1 is the same.
+In fact, we will generate this sequence almost every time!</p>
+
+<p>If we were to cache the intermediate results of <code class="highlighter-rouge">collatz-chain-length</code> 
+we would not have to calculate the length of this sequence every time.
+Let’s add memoization:</p>
+
+<div class="language-clojure highlighter-rouge"><pre class="highlight"><code><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">collatz-chain-length</span><span class="w">
+  </span><span class="p">(</span><span class="nf">memoize</span><span class="w">
+    </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w">
+        </span><span class="mi">1</span><span class="w">
+        </span><span class="p">(</span><span class="nb">inc</span><span class="w"> </span><span class="p">(</span><span class="nf">collatz-chain-length</span><span class="w"> </span><span class="p">(</span><span class="nf">collatz-step</span><span class="w"> </span><span class="n">n</span><span class="p">)))))))</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>And now it will compute in a reasonable time!</p>
+
+<h2 id="bonus-continuation-passing-version">Bonus continuation passing version:</h2>
+
+<p>The above code could potentially stack overflow because it does not <code class="highlighter-rouge">recur</code>.</p>
+
+<p>While not strictly needed for the above problem, 
+we could rewrite it using continuation passing and a custom memoization strategy:</p>
+
+<div class="language-clojure highlighter-rouge"><pre class="highlight"><code><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">cache</span><span class="w"> </span><span class="p">(</span><span class="nf">atom</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="w"> </span><span class="mi">1</span><span class="p">})]</span><span class="w">
+  </span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">collatz-chain-length-alt</span><span class="w"> </span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="w">
+    </span><span class="p">(</span><span class="nb">loop</span><span class="w"> </span><span class="p">[</span><span class="n">n</span><span class="w"> </span><span class="n">n,</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="nb">identity</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="nf">letfn</span><span class="w"> </span><span class="p">[(</span><span class="nf">cache-add</span><span class="w"> </span><span class="p">[</span><span class="n">length</span><span class="p">]</span><span class="w"> 
+                </span><span class="p">(</span><span class="nf">swap!</span><span class="w"> </span><span class="n">cache</span><span class="w"> </span><span class="nb">assoc</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="n">length</span><span class="p">)</span><span class="w"> </span><span class="n">length</span><span class="p">)]</span><span class="w">
+        </span><span class="p">(</span><span class="nb">if-let</span><span class="w"> </span><span class="p">[</span><span class="n">length</span><span class="w"> </span><span class="p">(</span><span class="err">@</span><span class="n">cache</span><span class="w"> </span><span class="n">n</span><span class="p">)]</span><span class="w">
+          </span><span class="p">(</span><span class="nf">k</span><span class="w"> </span><span class="n">length</span><span class="p">)</span><span class="w">
+          </span><span class="p">(</span><span class="nf">recur</span><span class="w"> </span><span class="p">(</span><span class="nf">collatz-step</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w">
+                 </span><span class="p">(</span><span class="nb">comp</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="nb">inc</span><span class="w"> </span><span class="n">cache-add</span><span class="p">)))))))</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>The big trick is in the new argument <script type="math/tex">k</script>, which is a function. 
+We keep growing this function on the recur call using <code class="highlighter-rouge">comp</code>.
+We add <code class="highlighter-rouge">inc</code> and <code class="highlighter-rouge">add-cache</code> functions until it finds a hit in the cache.</p>
+
+<p>Then this function will unwind, returning the length and filling the cache in the process. Neat.</p>
+
+<p>The optimisation is that we’re building the calls in the heap instead of the stack, which is larger.</p>
+
+<p>We can’t use <code class="highlighter-rouge">memoize</code> like before because it would also memoize the <script type="math/tex">k</script> argument.
+This would be pointless, because that value of <script type="math/tex">k</script>, as a stack of functions, will be unique for every value of <script type="math/tex">n</script>.
+So it will never hit our cache.</p>
+
+<p>But, other than only using <script type="math/tex">n</script> to cache, the caching solution here is basically a direct copy from the <code class="highlighter-rouge">memoization</code> source code.</p>
+
+<p>While certainly not clearer, it’s faster for larger problems.</p>
+
+  </div>
+</article>
+
+    </div>
+
+    <div class="col-md-3 col-md-offset-1 blog-sidebar">
+      <div class="sidebar-module sidebar-module-inset">
+        <h4>About</h4>
+        <p>My name is Dzjon and I like Machine Learning, Clojure and Python.
+          <a href="/about">Read more 	&raquo;</a></p>
+      </div>
+
+      <div class="sidebar-module">
+        <h4>Elsewhere</h4>
+        <ol class="list-unstyled">
+          
+<li>
+  <a href="https://github.com/dhessing"><i class="icon fa fa-github fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+<li>
+  <a href="https://telegram.me/dhessing"><i class="icon fa fa-paper-plane fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+        </ol>
+      </div>
+
+      <div class="sidebar-module">
+        <h4>Categories</h4>
+
+        <ol class="list-unstyled">
+          
+          <li><a class="post-link" href="/category/project-euler/">Project Euler</a></li>
+          
+        </ol>
+      </div>
+
+      <div class="sidebar-module">
+        <h4>Archives</h4>
+
+        <ol class="list-unstyled">
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/07/">July 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/06/">June 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/05/">May 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/04/">April 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/03/">March 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        </ol>
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+</main>
+
+<footer class="blog-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4">
+        <ul class="list-unstyled">
+          <li>Dzjon Hessing</li>
+          <li><a href="mailto:dhessing@gmail.com">dhessing@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="col-sm-4">
+        <ul class="list-unstyled ">
+          
+<li>
+  <a href="https://github.com/dhessing"><i class="icon fa fa-github fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+<li>
+  <a href="https://telegram.me/dhessing"><i class="icon fa fa-paper-plane fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+        </ul>
+      </div>
+
+      <div class="col-sm-4">
+        <p>My experiences with Machine Learning, Clojure and Python.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script type="text/javascript" src="/assets/vendor.js"></script>
+<script type="text/javascript" src="/assets/application.js"></script>
+
+<script>
+    (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+    function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+    e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+    e.src='https://www.google-analytics.com/analytics.js';
+    r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+    ga('create','UA-33653650-1','auto');ga('send','pageview');
+
+
+</script>
+</body>
+</html>

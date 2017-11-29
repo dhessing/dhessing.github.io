@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Dzjon Hessing | Special Pythagorean triplet</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Special Pythagorean triplet">
+  <meta property="og:url" content="http://www.dzjon.nl">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="">
+  <meta property="og:image" content="">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="http://www.dzjon.nl">
+  <meta name="twitter:title" content="Special Pythagorean triplet">
+  <meta name="twitter:description" content="">
+  <meta name="twitter:image" content="">
+
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <script async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+
+  <link type="text/css" rel="stylesheet" href="/assets/application.css">
+</head>
+<body>
+<!--[if lt IE 8]>
+<p class="browserupgrade">You are using an <strong>outdated</strong>
+  browser. Please <a href="http://browsehappy.com/">upgrade your browser</a>
+  to improve your experience.</p>
+<![endif]-->
+
+
+<div class="blog-masthead">
+  <div class="container">
+    <nav class="nav blog-nav">
+      
+      <a class="nav-link " href="/">Home</a>
+      <a class="nav-link " href="/courses/">Courses</a>
+      <a class="nav-link active" href="/category/project-euler/">Project Euler</a>
+      <a class="nav-link " href="/about/">About</a>
+    </nav>
+  </div>
+</div>
+
+<main class="container">
+  <div class="home container">
+  <div class="row">
+    <div class="col-md-8 blog-main">
+      <article class="blog-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <h2 class="blog-post-title" itemprop="name headline">Special Pythagorean triplet</h2>
+  <p class="blog-post-meta">
+    <time datetime="2016-03-23T00:00:00+00:00" itemprop="datePublished">
+      Mar 23, 2016
+    </time>
+    
+    • in <a href="/category/project-euler">
+    Project Euler</a>
+    
+    
+    • Problem 9
+    
+  </p>
+
+  <div itemprop="articleBody">
+    <blockquote>
+  <p>A Pythagorean triplet is a set of three natural numbers, a &lt; b &lt; c, for which,</p>
+
+  <script type="math/tex; mode=display">a^2 + b^2 = c^2</script>
+
+  <p>For example, <script type="math/tex">3^2 + 4^2 = 9 + 16 = 25 = 5^2</script>.</p>
+
+  <p>There exists exactly one Pythagorean triplet for which <script type="math/tex">a + b + c = 1000</script>.
+Find the product <script type="math/tex">abc</script>.</p>
+</blockquote>
+
+<p>For the solution I first generate an endless list of triplets,
+and then to find the one we need and multiply it.</p>
+
+<p>Let’s start with the triplets.
+Euclid’s formula tells that given an arbitrary pair of positive integers m and n with m &gt; n, the integers</p>
+
+<script type="math/tex; mode=display">a = m^2 - n^2 ,\ \, b = 2mn ,\ \, c = m^2 + n^2</script>
+
+<p>form a Pythagorean triple. To put that into code:</p>
+
+<figure class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">pythagorian-triplets</span><span class="w"> </span><span class="p">[]</span><span class="w">
+  </span><span class="p">(</span><span class="k">for</span><span class="w"> </span><span class="p">[</span><span class="n">m</span><span class="w"> </span><span class="p">(</span><span class="nb">iterate</span><span class="w"> </span><span class="nb">inc</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w">
+        </span><span class="n">n</span><span class="w"> </span><span class="p">(</span><span class="nb">iterate</span><span class="w"> </span><span class="nb">inc</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w">
+        </span><span class="no">:while</span><span class="w"> </span><span class="p">(</span><span class="nb">&gt;</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w">
+        </span><span class="no">:when</span><span class="w"> </span><span class="p">(</span><span class="nf">odd?</span><span class="w"> </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="n">n</span><span class="p">))</span><span class="w">
+        </span><span class="no">:let</span><span class="w"> </span><span class="p">[</span><span class="n">a</span><span class="w"> </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="n">n</span><span class="p">))</span><span class="w">
+              </span><span class="n">b</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w">
+              </span><span class="n">c</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="n">n</span><span class="p">))]]</span><span class="w">
+    </span><span class="p">[</span><span class="n">a</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="n">c</span><span class="p">]))</span></code></pre></figure>
+
+<p>But that will only generate us the primitive triplets.
+Presumably, we need them all.
+To get these we can multiply with <script type="math/tex">k</script>:</p>
+
+<script type="math/tex; mode=display">a = k\cdot(m^2 - n^2)   ,\ \, b = k\cdot(2mn) ,\ \, c = k\cdot(m^2 + n^2)</script>
+
+<p>Now in the code I could have just added a loop over <script type="math/tex">k</script>, but I can also directly calculate it’s value.
+For <script type="math/tex">s</script> the sum of the triplets, we get:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align*}
+s &= a + b + c \\
+&= k\cdot(m^2 - n^2) + k\cdot(2mn) + k\cdot(m^2 + n^2) \\
+&= km^2 - kn^2 + 2kmn + km^2 + kn^2 \\
+&= 2km^2 + 2kmn\\
+&= 2km(m + n) \\
+k &= \frac{s}{2m(m+n)}
+\end{align*} %]]></script>
+
+<p>Using that, we get the following updated code:</p>
+
+<figure class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">pythagorian-triplets</span><span class="w"> </span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="k">for</span><span class="w"> </span><span class="p">[</span><span class="n">m</span><span class="w"> </span><span class="p">(</span><span class="nb">drop</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">(</span><span class="nb">range</span><span class="p">))</span><span class="w">
+        </span><span class="n">n</span><span class="w"> </span><span class="p">(</span><span class="nb">drop</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">(</span><span class="nb">range</span><span class="p">))</span><span class="w">
+        </span><span class="no">:while</span><span class="w"> </span><span class="p">(</span><span class="nb">&gt;</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w">
+        </span><span class="no">:when</span><span class="w"> </span><span class="p">(</span><span class="nf">odd?</span><span class="w"> </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="n">n</span><span class="p">))</span><span class="w">
+        </span><span class="no">:when</span><span class="w"> </span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">(</span><span class="nf">math/gcd</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="n">n</span><span class="p">))</span><span class="w">
+        </span><span class="no">:let</span><span class="w"> </span><span class="p">[</span><span class="n">k</span><span class="w"> </span><span class="p">(</span><span class="nb">/</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="n">n</span><span class="p">)))</span><span class="w">                       </span><span class="c1">;new
+</span><span class="w">              </span><span class="n">a</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="p">(</span><span class="nb">-</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="n">n</span><span class="p">)))</span><span class="w">                   </span><span class="c1">;added k
+</span><span class="w">              </span><span class="n">b</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="n">m</span><span class="p">))</span><span class="w">                             </span><span class="c1">;added k
+</span><span class="w">              </span><span class="n">c</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="p">(</span><span class="nb">+</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">*</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="n">n</span><span class="p">)))]</span><span class="w">                  </span><span class="c1">;added k
+</span><span class="w">        </span><span class="no">:when</span><span class="w"> </span><span class="p">(</span><span class="nf">integer?</span><span class="w"> </span><span class="n">k</span><span class="p">)]</span><span class="w">                                 </span><span class="c1">;new
+</span><span class="w">    </span><span class="p">[</span><span class="n">a</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="n">c</span><span class="p">]))</span></code></pre></figure>
+
+<p>And to answer it:</p>
+
+<figure class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="nb">*</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="p">(</span><span class="nf">pythagorian-triplets</span><span class="w"> </span><span class="mi">1000</span><span class="p">)))</span></code></pre></figure>
+
+  </div>
+</article>
+
+    </div>
+
+    <div class="col-md-3 col-md-offset-1 blog-sidebar">
+      <div class="sidebar-module sidebar-module-inset">
+        <h4>About</h4>
+        <p>My name is Dzjon and I like Machine Learning, Clojure and Python.
+          <a href="/about">Read more 	&raquo;</a></p>
+      </div>
+
+      <div class="sidebar-module">
+        <h4>Elsewhere</h4>
+        <ol class="list-unstyled">
+          
+<li>
+  <a href="https://github.com/dhessing"><i class="icon fa fa-github fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+<li>
+  <a href="https://telegram.me/dhessing"><i class="icon fa fa-paper-plane fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+        </ol>
+      </div>
+
+      <div class="sidebar-module">
+        <h4>Categories</h4>
+
+        <ol class="list-unstyled">
+          
+          <li><a class="post-link" href="/category/project-euler/">Project Euler</a></li>
+          
+        </ol>
+      </div>
+
+      <div class="sidebar-module">
+        <h4>Archives</h4>
+
+        <ol class="list-unstyled">
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/07/">July 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/06/">June 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/05/">May 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/04/">April 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/03/">March 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        </ol>
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+</main>
+
+<footer class="blog-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4">
+        <ul class="list-unstyled">
+          <li>Dzjon Hessing</li>
+          <li><a href="mailto:dhessing@gmail.com">dhessing@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="col-sm-4">
+        <ul class="list-unstyled ">
+          
+<li>
+  <a href="https://github.com/dhessing"><i class="icon fa fa-github fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+<li>
+  <a href="https://telegram.me/dhessing"><i class="icon fa fa-paper-plane fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+        </ul>
+      </div>
+
+      <div class="col-sm-4">
+        <p>My experiences with Machine Learning, Clojure and Python.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script type="text/javascript" src="/assets/vendor.js"></script>
+<script type="text/javascript" src="/assets/application.js"></script>
+
+<script>
+    (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+    function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+    e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+    e.src='https://www.google-analytics.com/analytics.js';
+    r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+    ga('create','UA-33653650-1','auto');ga('send','pageview');
+
+
+</script>
+</body>
+</html>

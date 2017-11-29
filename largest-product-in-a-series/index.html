@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Dzjon Hessing | Largest product in a series</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Largest product in a series">
+  <meta property="og:url" content="http://www.dzjon.nl">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="">
+  <meta property="og:image" content="">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="http://www.dzjon.nl">
+  <meta name="twitter:title" content="Largest product in a series">
+  <meta name="twitter:description" content="">
+  <meta name="twitter:image" content="">
+
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <script async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+
+  <link type="text/css" rel="stylesheet" href="/assets/application.css">
+</head>
+<body>
+<!--[if lt IE 8]>
+<p class="browserupgrade">You are using an <strong>outdated</strong>
+  browser. Please <a href="http://browsehappy.com/">upgrade your browser</a>
+  to improve your experience.</p>
+<![endif]-->
+
+
+<div class="blog-masthead">
+  <div class="container">
+    <nav class="nav blog-nav">
+      
+      <a class="nav-link " href="/">Home</a>
+      <a class="nav-link " href="/courses/">Courses</a>
+      <a class="nav-link active" href="/category/project-euler/">Project Euler</a>
+      <a class="nav-link " href="/about/">About</a>
+    </nav>
+  </div>
+</div>
+
+<main class="container">
+  <div class="home container">
+  <div class="row">
+    <div class="col-md-8 blog-main">
+      <article class="blog-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <h2 class="blog-post-title" itemprop="name headline">Largest product in a series</h2>
+  <p class="blog-post-meta">
+    <time datetime="2016-03-19T00:00:00+00:00" itemprop="datePublished">
+      Mar 19, 2016
+    </time>
+    
+    • in <a href="/category/project-euler">
+    Project Euler</a>
+    
+    
+    • Problem 8
+    
+  </p>
+
+  <div itemprop="articleBody">
+    <blockquote>
+  <p>The four adjacent digits in the 1000-digit number that have the greatest product are 9 × 9 × 8 × 9 = 5832.</p>
+
+  <script type="math/tex; mode=display">73167176531330624919225119674426574742355349194934 \\
+ 96983520312774506326239578318016984801869478851843 \\
+ 85861560789112949495459501737958331952853208805511 \\
+ 12540698747158523863050715693290963295227443043557 \\
+ 66896648950445244523161731856403098711121722383113 \\
+ 62229893423380308135336276614282806444486645238749 \\
+ 30358907296290491560440772390713810515859307960866 \\
+ 70172427121883998797908792274921901699720888093776 \\
+ 65727333001053367881220235421809751254540594752243 \\
+ 52584907711670556013604839586446706324415722155397 \\
+ 53697817977846174064955149290862569321978468622482 \\
+ 83972241375657056057490261407972968652414535100474 \\
+ 82166370484403199890008895243450658541227588666881 \\
+ 16427171479924442928230863465674813919123162824586 \\
+ 17866458359124566529476545682848912883142607690042 \\
+ 24219022671055626321111109370544217506941658960408 \\
+ 07198403850962455444362981230987879927244284909188 \\
+ 84580156166097919133875499200524063689912560717606 \\
+ 05886116467109405077541002256983155200055935729725 \\
+ 71636269561882670428252483600823257530420752963450 \\</script>
+
+  <p>Find the thirteen adjacent digits in the 1000-digit number that have the greatest product. What is the value of this product?</p>
+</blockquote>
+
+<p>The plan is to break that big number into individual numbers,
+multiply every 13 adjacent digits and find the highest sum.</p>
+
+<p>To break it up into digits I keep chipping off the last digit
+until none remains.</p>
+
+<figure class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">to-digits</span><span class="w"> </span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">-&gt;&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">iterate</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nb">quot</span><span class="w"> </span><span class="n">%</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w">
+       </span><span class="p">(</span><span class="nb">take-while</span><span class="w"> </span><span class="nb">pos?</span><span class="p">)</span><span class="w">
+       </span><span class="p">(</span><span class="nf">mapv</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nf">mod</span><span class="w"> </span><span class="n">%</span><span class="w"> </span><span class="mi">10</span><span class="p">))</span><span class="w">
+       </span><span class="p">(</span><span class="nb">rseq</span><span class="p">)))</span></code></pre></figure>
+
+<p>Now to get the highest sequence I used <code class="highlighter-rouge">partition</code> to break up the list.
+It gets a window of 13 digits and then slides the window one position to the right
+to return every 13-digit partition in the list.
+Then multiply every sequence and find the highest.</p>
+
+<figure class="highlight"><pre><code class="language-clojure" data-lang="clojure"><span class="p">(</span><span class="nf">-&gt;&gt;</span><span class="w"> </span><span class="p">(</span><span class="nf">to-digits</span><span class="w"> </span><span class="n">large-number</span><span class="p">)</span><span class="w">
+     </span><span class="p">(</span><span class="nf">partition</span><span class="w"> </span><span class="mi">13</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w">
+     </span><span class="p">(</span><span class="nb">map</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="nb">*</span><span class="w"> </span><span class="n">%</span><span class="p">))</span><span class="w">
+     </span><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="nb">max</span><span class="p">))</span></code></pre></figure>
+
+<p>Done!</p>
+
+  </div>
+</article>
+
+    </div>
+
+    <div class="col-md-3 col-md-offset-1 blog-sidebar">
+      <div class="sidebar-module sidebar-module-inset">
+        <h4>About</h4>
+        <p>My name is Dzjon and I like Machine Learning, Clojure and Python.
+          <a href="/about">Read more 	&raquo;</a></p>
+      </div>
+
+      <div class="sidebar-module">
+        <h4>Elsewhere</h4>
+        <ol class="list-unstyled">
+          
+<li>
+  <a href="https://github.com/dhessing"><i class="icon fa fa-github fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+<li>
+  <a href="https://telegram.me/dhessing"><i class="icon fa fa-paper-plane fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+        </ol>
+      </div>
+
+      <div class="sidebar-module">
+        <h4>Categories</h4>
+
+        <ol class="list-unstyled">
+          
+          <li><a class="post-link" href="/category/project-euler/">Project Euler</a></li>
+          
+        </ol>
+      </div>
+
+      <div class="sidebar-module">
+        <h4>Archives</h4>
+
+        <ol class="list-unstyled">
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/07/">July 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/06/">June 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/05/">May 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/04/">April 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/03/">March 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        </ol>
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+</main>
+
+<footer class="blog-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4">
+        <ul class="list-unstyled">
+          <li>Dzjon Hessing</li>
+          <li><a href="mailto:dhessing@gmail.com">dhessing@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="col-sm-4">
+        <ul class="list-unstyled ">
+          
+<li>
+  <a href="https://github.com/dhessing"><i class="icon fa fa-github fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+<li>
+  <a href="https://telegram.me/dhessing"><i class="icon fa fa-paper-plane fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+        </ul>
+      </div>
+
+      <div class="col-sm-4">
+        <p>My experiences with Machine Learning, Clojure and Python.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script type="text/javascript" src="/assets/vendor.js"></script>
+<script type="text/javascript" src="/assets/application.js"></script>
+
+<script>
+    (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+    function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+    e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+    e.src='https://www.google-analytics.com/analytics.js';
+    r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+    ga('create','UA-33653650-1','auto');ga('send','pageview');
+
+
+</script>
+</body>
+</html>

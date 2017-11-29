@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Dzjon Hessing | Counting Sundays</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Counting Sundays">
+  <meta property="og:url" content="http://www.dzjon.nl">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="">
+  <meta property="og:image" content="">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="http://www.dzjon.nl">
+  <meta name="twitter:title" content="Counting Sundays">
+  <meta name="twitter:description" content="">
+  <meta name="twitter:image" content="">
+
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <script async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+
+  <link type="text/css" rel="stylesheet" href="/assets/application.css">
+</head>
+<body>
+<!--[if lt IE 8]>
+<p class="browserupgrade">You are using an <strong>outdated</strong>
+  browser. Please <a href="http://browsehappy.com/">upgrade your browser</a>
+  to improve your experience.</p>
+<![endif]-->
+
+
+<div class="blog-masthead">
+  <div class="container">
+    <nav class="nav blog-nav">
+      
+      <a class="nav-link " href="/">Home</a>
+      <a class="nav-link " href="/courses/">Courses</a>
+      <a class="nav-link active" href="/category/project-euler/">Project Euler</a>
+      <a class="nav-link " href="/about/">About</a>
+    </nav>
+  </div>
+</div>
+
+<main class="container">
+  <div class="home container">
+  <div class="row">
+    <div class="col-md-8 blog-main">
+      <article class="blog-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <h2 class="blog-post-title" itemprop="name headline">Counting Sundays</h2>
+  <p class="blog-post-meta">
+    <time datetime="2016-04-10T00:00:00+00:00" itemprop="datePublished">
+      Apr 10, 2016
+    </time>
+    
+    • in <a href="/category/project-euler">
+    Project Euler</a>
+    
+    
+    • Problem 19
+    
+  </p>
+
+  <div itemprop="articleBody">
+    <blockquote>
+  <p>You are given the following information, but you may prefer to do some research for yourself.</p>
+
+  <ul>
+    <li>1 Jan 1900 was a Monday.</li>
+    <li>Thirty days has September,<br />
+April, June and November.<br />
+All the rest have thirty-one,<br />
+Saving February alone,<br />
+Which has twenty-eight, rain or shine.<br />
+And on leap years, twenty-nine.</li>
+    <li>A leap year occurs on any year evenly divisible by 4, but not on a century unless it is divisible by 400.</li>
+  </ul>
+
+  <p>How many Sundays fell on the first of the month during the twentieth century (1 Jan 1901 to 31 Dec 2000)?</p>
+</blockquote>
+
+<p>We can probably just guess this answer by assuming a binomial distribution and calculating the mean. 
+The number of trials will be  12 months times a a hundred years, giving us a mean <script type="math/tex">\mu = np = 1200 * \frac{1}{7} = 171</script>.</p>
+
+<p>But let’s know for sure.
+The plan is to generate a list of all sundays of the twentieth century, then filter only those that fall on the first,
+and then to find the length of this list.</p>
+
+<p>For the dates I will first try to find the first sunday of 1901.
+I used the excellent <code class="highlighter-rouge">clj-time</code> library to put this into code:</p>
+
+<div class="language-clojure highlighter-rouge"><pre class="highlight"><code><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">first-sunday-of-year</span><span class="w"> </span><span class="p">[</span><span class="n">year</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="p">(</span><span class="nb">filter</span><span class="w"> </span><span class="n">pr/sunday?</span><span class="w"> </span><span class="p">(</span><span class="nf">p/periodic-seq</span><span class="w"> </span><span class="p">(</span><span class="nf">t/date-midnight</span><span class="w"> </span><span class="n">year</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">t/days</span><span class="w"> </span><span class="mi">1</span><span class="p">)))))</span><span class="w">
+</span></code></pre>
+</div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>(first-sunday-of-year 1901)
+=&gt; #&lt;DateMidnight 1901-01-06T00:00:00.000Z&gt;
+</code></pre>
+</div>
+
+<p>Ok, so the first sunday is the 6th of January.
+Now to solve I will keep adding whole weeks until I reach 2001, filter by first day and count:</p>
+
+<div class="language-clojure highlighter-rouge"><pre class="highlight"><code><span class="p">(</span><span class="nf">-&gt;&gt;</span><span class="w"> </span><span class="p">(</span><span class="nf">p/periodic-seq</span><span class="w"> </span><span class="p">(</span><span class="nf">first-sunday-of-year</span><span class="w"> </span><span class="mi">1901</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nf">t/weeks</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span><span class="w"> 
+     </span><span class="p">(</span><span class="nb">take-while</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nb">&lt;</span><span class="w"> </span><span class="p">(</span><span class="nf">t/year</span><span class="w"> </span><span class="n">%</span><span class="p">)</span><span class="w"> </span><span class="mi">2001</span><span class="p">))</span><span class="w"> 
+     </span><span class="p">(</span><span class="nb">filter</span><span class="w"> </span><span class="n">pr/first-day-of-month?</span><span class="p">)</span><span class="w"> 
+     </span><span class="p">(</span><span class="nb">count</span><span class="p">))</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>The answer may surprise you!</p>
+
+  </div>
+</article>
+
+    </div>
+
+    <div class="col-md-3 col-md-offset-1 blog-sidebar">
+      <div class="sidebar-module sidebar-module-inset">
+        <h4>About</h4>
+        <p>My name is Dzjon and I like Machine Learning, Clojure and Python.
+          <a href="/about">Read more 	&raquo;</a></p>
+      </div>
+
+      <div class="sidebar-module">
+        <h4>Elsewhere</h4>
+        <ol class="list-unstyled">
+          
+<li>
+  <a href="https://github.com/dhessing"><i class="icon fa fa-github fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+<li>
+  <a href="https://telegram.me/dhessing"><i class="icon fa fa-paper-plane fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+        </ol>
+      </div>
+
+      <div class="sidebar-module">
+        <h4>Categories</h4>
+
+        <ol class="list-unstyled">
+          
+          <li><a class="post-link" href="/category/project-euler/">Project Euler</a></li>
+          
+        </ol>
+      </div>
+
+      <div class="sidebar-module">
+        <h4>Archives</h4>
+
+        <ol class="list-unstyled">
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/07/">July 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/06/">June 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/05/">May 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/04/">April 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <li>
+            <a class="post-link" href="/2016/03/">March 2016</a>
+          </li>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        </ol>
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+</main>
+
+<footer class="blog-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4">
+        <ul class="list-unstyled">
+          <li>Dzjon Hessing</li>
+          <li><a href="mailto:dhessing@gmail.com">dhessing@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="col-sm-4">
+        <ul class="list-unstyled ">
+          
+<li>
+  <a href="https://github.com/dhessing"><i class="icon fa fa-github fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+<li>
+  <a href="https://telegram.me/dhessing"><i class="icon fa fa-paper-plane fa-fw"></i> dhessing</a>
+
+</li>
+
+
+
+        </ul>
+      </div>
+
+      <div class="col-sm-4">
+        <p>My experiences with Machine Learning, Clojure and Python.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script type="text/javascript" src="/assets/vendor.js"></script>
+<script type="text/javascript" src="/assets/application.js"></script>
+
+<script>
+    (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+    function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+    e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+    e.src='https://www.google-analytics.com/analytics.js';
+    r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+    ga('create','UA-33653650-1','auto');ga('send','pageview');
+
+
+</script>
+</body>
+</html>
